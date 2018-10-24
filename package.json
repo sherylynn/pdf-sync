@@ -58,6 +58,8 @@
     "gulp-cli": "^2.0.1",
     "gulp-connect": "^5.6.1",
     "http-proxy-middleware": "^0.19.0",
-    "pouchdb": "^7.0.0"
+    "pouchdb": "^7.0.0",
+    "pouchdb-server": "^4.1.0",
+    "electron": "^2.0.12"
   }
 }
