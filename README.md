@@ -1,21 +1,13 @@
-# PDF.js
+# pdf-sync
 
-PDF.js is a Portable Document Format (PDF) viewer that is built with HTML5.
-
-PDF.js is community-driven and supported by Mozilla Labs. Our goal is to
-create a general-purpose, web standards-based platform for parsing and
-rendering PDFs.
+pdf-sync is add sync to pdf.js
 
 ## Contributing
 
-PDF.js is an open source project and always looking for more contributors. To
+pdf-sync is an open source project and always looking for more contributors. To
 get involved, visit:
 
-+ [Issue Reporting Guide](https://github.com/mozilla/pdf.js/blob/master/.github/CONTRIBUTING.md)
-+ [Code Contribution Guide](https://github.com/mozilla/pdf.js/wiki/Contributing)
-+ [Frequently Asked Questions](https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions)
-+ [Good Beginner Bugs](https://github.com/mozilla/pdf.js/issues?direction=desc&labels=5-good-beginner-bug&page=1&sort=created&state=open)
-+ [Projects](https://github.com/mozilla/pdf.js/projects)
++ [Projects](https://github.com//sherylynn//pdf-sync)
 
 Feel free to stop by #pdfjs on irc.mozilla.org for questions or guidance.
 
@@ -52,17 +44,13 @@ globally (see also [gulp's getting started](https://github.com/gulpjs/gulp/blob/
 
     $ npm install -g gulp-cli
 
-If everything worked out, install all dependencies for PDF.js:
+If everything worked out, install all dependencies for pdf-sync:
 
     $ npm install
 
-If you want to SYNC your reading process,  install all dependencies for pouchDB server:
+If you want to SYNC your reading process,  install all dependencies for pouchDB server, and just run
 
-    $ npm install pouchdb-server -g
-
-Then run pouchdb-server on port 3456
-
-    $ pouchdb-server -p 3456
+    $ npm run db_level
 
 Finally, you need to start a local web server as some browsers do not allow opening
 PDF files using a `file://` URL. Run:
@@ -79,16 +67,28 @@ It is also possible to view all test PDF files on the right side by opening:
 
 + http://localhost:8888/test/pdfs/?frame
 
-## Building PDF.js
+## Running in electron
+
+If you want app version, just like electron, then you can run
+
+    $ npm run app
+
+## Building pdf-sync
 
 In order to bundle all `src/` files into two production scripts and build the generic
 viewer, run:
 
-    $ gulp generic
+    $ npm run build
 
 This will generate `pdf.js` and `pdf.worker.js` in the `build/generic/build/` directory.
 Both scripts are needed but only `pdf.js` needs to be included since `pdf.worker.js` will
 be loaded by `pdf.js`. The PDF.js files are large and should be minified for production.
+
+## Building electron version pdf-sync
+
+If you want to build your electron app, then you can just run
+
+    $ npm run dist_/*target platform*/
 
 ## Using PDF.js in a web application
 
