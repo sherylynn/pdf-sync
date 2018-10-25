@@ -2,9 +2,9 @@
   "name": "pdf-sync",
   "version": "0.0.1",
   "main": "main.js",
-  "author":"sherylynn",
-  "email":"352281674@qq.com",
-  "description":"pdf sync viewer",
+  "author": "sherylynn",
+  "email": "352281674@qq.com",
+  "description": "pdf sync viewer",
   "devDependencies": {
     "acorn": "^5.7.3",
     "autoprefixer": "^8.6.5",
@@ -62,15 +62,15 @@
     "start": "gulp app",
     "server": "gulp server",
     "db_sql": "pouchdb-server --port 3456 --host 0.0.0.0 --sqlite --dir ./db",
-    "db_level":"pouchdb-server --port 3456 --host 0.0.0.0 --dir ./db",
+    "db_level": "pouchdb-server --port 3456 --host 0.0.0.0 --dir ./db",
     "app": "electron ./ --debug",
     "dist_mac": "electron-builder --mac --x64",
     "dist_arm": "electron-builder --linux --armv7l",
+    "dist_deb": "electron-builder --linux --x64",
     "build": "gulp generic",
     "test": "gulp lint unittestcli externaltest"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "build": {
     "appId": "com.sherylynn.pdf-sync",
     "mac": {
@@ -79,17 +79,18 @@
         "zip"
       ]
     },
-    "linux":{
-      "target":[
-        "deb"
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
       ],
-      "maintainer":"sherylynn"
+      "maintainer": "sherylynn"
     },
     "directories": {
       "buildResources": "./",
       "output": "./build/app"
     },
-    "files":[
+    "files": [
       "**/*",
       "!test",
       "!src",
