@@ -1,6 +1,7 @@
 {
-  "name": "pdf.js",
-  "version": "2.0.0",
+  "name": "pdf-sync",
+  "version": "0.0.1",
+  "main":"main.js",
   "devDependencies": {
     "acorn": "^5.7.3",
     "autoprefixer": "^8.6.5",
@@ -50,8 +51,8 @@
   "scripts": {
     "start": "gulp app",
     "server": "gulp server",
-    "db":"pouchdb-server --port 3456 --sqlite --dir ./db",
-    "app":"electron ./build/generic/web/viewer.html",
+    "db": "pouchdb-server --port 3456 --sqlite --dir ./db",
+    "app":"electron ./",
     "build": "gulp generic",
     "test": "gulp lint unittestcli externaltest"
   },

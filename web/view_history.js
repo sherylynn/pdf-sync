@@ -15,7 +15,12 @@
 
 const DEFAULT_VIEW_HISTORY_CACHE_SIZE = 20;
 import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
-// import PouchDB from 'pouchdb';
+import { config } from '../config';
+// import PouchDB from 'pouch// console.log(databaseStr);
+let url = new URL(window.location.href);
+// electron or gulp server
+// '/db' for gulp proxy
+let origin = url.protocol=='file:' ? config.server_origin:url.origin+'/db';
 
 /**
  * View History - This is a utility for saving various view parameters for
@@ -63,11 +68,8 @@ class ViewHistory {
       sessionStorage.setItem('pdfjs.history', databaseStr);
       return;
     }
-    // console.log(databaseStr);
-    let url = new URL(window.location.href);
-    let origin = url.origin;
-    console.log(origin)
-    let db = new PouchDB(origin + '/db/pdf_js');
+
+    let db = new PouchDB(origin + '/pdf_js');
     try {
       let doc = await db.get('pdf_history');
       try {
@@ -101,9 +103,7 @@ class ViewHistory {
       return sessionStorage.getItem('pdfjs.history');
     }
     // console.log(databaseStr);
-    let url = new URL(window.location.href);
-    let origin = url.origin;
-    let db = new PouchDB(origin + '/db/pdf_js');
+    let db = new PouchDB(origin + '/pdf_js');
     try {
       let doc = await db.get('pdf_history');
       console.log(doc);
