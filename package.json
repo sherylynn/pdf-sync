@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "main.js",
   "author":"sherylynn",
+  "email":"352281674@qq.com",
   "description":"pdf sync viewer",
   "devDependencies": {
     "acorn": "^5.7.3",
@@ -64,6 +65,7 @@
     "db_level":"pouchdb-server --port 3456 --host 0.0.0.0 --dir ./db",
     "app": "electron ./ --debug",
     "dist_mac": "electron-builder --mac --x64",
+    "dist_arm": "electron-builder --linux --armv7l",
     "build": "gulp generic",
     "test": "gulp lint unittestcli externaltest"
   },
@@ -76,6 +78,12 @@
         "dmg",
         "zip"
       ]
+    },
+    "linux":{
+      "target":[
+        "deb"
+      ],
+      "maintainer":"sherylynn"
     },
     "directories": {
       "buildResources": "./",
