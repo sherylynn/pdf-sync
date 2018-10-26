@@ -64,6 +64,7 @@
     "db_sql": "pouchdb-server --port 3456 --host 0.0.0.0 --sqlite --dir ./db",
     "db_level": "pouchdb-server --port 3456 --host 0.0.0.0 --dir ./db",
     "app": "electron ./ --debug",
+    "dist_win": "electron-builder --win --x64",
     "dist_mac": "electron-builder --mac --x64",
     "dist_arm": "electron-builder --linux --armv7l",
     "dist_deb": "electron-builder --linux --x64",
@@ -85,6 +86,11 @@
         "AppImage"
       ],
       "maintainer": "sherylynn"
+    },
+    "win":{
+      "target":[
+        "nsis"
+      ]
     },
     "directories": {
       "buildResources": "./",
