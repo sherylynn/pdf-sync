@@ -92,6 +92,14 @@
         "nsis"
       ]
     },
+    "nsis":{
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true
+    },
     "directories": {
       "buildResources": "./",
       "output": "./build/app"
