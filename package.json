@@ -24,6 +24,7 @@
     "eslint-plugin-unicorn": "^4.0.3",
     "fancy-log": "^1.3.2",
     "gulp": "^3.9.1",
+    "gulp-cli": "^2.0.1",
     "gulp-connect": "^5.6.1",
     "gulp-postcss": "^7.0.1",
     "gulp-rename": "^1.4.0",
@@ -61,14 +62,14 @@
   "scripts": {
     "start": "gulp app",
     "server": "gulp server",
-    "db_sql": "pouchdb-server --port 3456 --host 0.0.0.0 --sqlite --dir ./db",
-    "db_level": "pouchdb-server --port 3456 --host 0.0.0.0 --dir ./db",
+    "db_sql": "pouchdb-server --port 3456 --host 0.0.0.0 --sqlite --dir ./db --config ./db/config.json",
+    "db_level": "pouchdb-server --port 3456 --host 0.0.0.0 --dir ./db --config ./db/config.json",
     "app": "electron ./ --debug",
-    "dist_all": "electron-builder -mwl --x64",
-    "dist_win": "electron-builder --win --x64",
-    "dist_mac": "electron-builder --mac --x64",
+    "dist_all": "electron-builder -mwl ",
+    "dist_win": "electron-builder --win ",
+    "dist_mac": "electron-builder --mac ",
     "dist_arm": "electron-builder --linux --armv7l",
-    "dist_deb": "electron-builder --linux --x64",
+    "dist_deb": "electron-builder --linux ",
     "build": "gulp generic",
     "test": "gulp lint unittestcli externaltest"
   },
@@ -79,20 +80,35 @@
     "appId": "com.sherylynn.pdf-sync",
     "mac": {
       "target": [
-        "dmg",
-        "zip"
+        {
+          "target": "dmg",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     },
     "linux": {
       "target": [
-        "deb",
-        "AppImage"
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "armv7l"
+          ]
+        }
       ],
       "maintainer": "sherylynn"
     },
     "win": {
       "target": [
-        "nsis"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
       ]
     },
     "nsis": {
