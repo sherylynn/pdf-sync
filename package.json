@@ -56,7 +56,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/sherylynn/pdf-sync.git"
+    "url": "https://github.com/sherylynn/pdf-sync.git"
   },
   "license": "Apache-2.0",
   "scripts": {
@@ -71,6 +71,7 @@
     "dist_arm": "electron-builder --linux --armv7l",
     "dist_deb": "electron-builder --linux ",
     "build": "gulp generic",
+    "publish":"build --mac --win --linux --publish always",
     "test": "gulp lint unittestcli externaltest"
   },
   "dependencies": {
@@ -122,12 +123,9 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "sherylynn",
-        "vPrefixedTagName": false,
-        "host": "github.com",
-        "protocol": "https",
+        "vPrefixedTagName": true,
         "private": false,
-        "releaseType": "draft"
+        "releaseType": "prerelease"
       }
     ],
     "directories": {
