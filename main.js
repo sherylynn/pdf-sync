@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow ,} = require('electron');
-
+// import { autoUpdater } from "electron-updater"
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const debug = /--debug/.test(process.argv[2]);
 // Keep a global reference of the window object, if you don't, the window will
@@ -18,7 +19,7 @@ function createWindow() {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
   }
-
+  autoUpdater.checkForUpdatesAndNotify()
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows

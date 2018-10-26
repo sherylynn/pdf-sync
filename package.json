@@ -1,11 +1,12 @@
 {
   "name": "pdf-sync",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "main.js",
   "author": "sherylynn",
   "email": "352281674@qq.com",
   "description": "pdf sync viewer",
   "devDependencies": {
+    "@types/pouchdb": "^6.3.2",
     "acorn": "^5.7.3",
     "autoprefixer": "^8.6.5",
     "babel-core": "^6.26.3",
@@ -14,6 +15,8 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "core-js": "^2.5.7",
+    "electron": "^2.0.12",
+    "electron-builder": "^20.28.4",
     "escodegen": "^1.11.0",
     "eslint": "^5.6.1",
     "eslint-plugin-mozilla": "^0.14.0",
@@ -21,17 +24,21 @@
     "eslint-plugin-unicorn": "^4.0.3",
     "fancy-log": "^1.3.2",
     "gulp": "^3.9.1",
+    "gulp-connect": "^5.6.1",
     "gulp-postcss": "^7.0.1",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
     "gulp-transform": "^3.0.5",
     "gulp-zip": "^4.2.0",
+    "http-proxy-middleware": "^0.19.0",
     "jasmine": "^3.2.0",
     "jasmine-core": "^3.2.1",
     "jsdoc": "^3.5.5",
     "merge-stream": "^1.0.1",
     "mkdirp": "^0.5.1",
     "node-ensure": "^0.0.0",
+    "pouchdb": "^7.0.0",
+    "pouchdb-server": "^4.1.0",
     "rimraf": "^2.6.2",
     "streamqueue": "^1.1.2",
     "systemjs": "^0.21.5",
@@ -44,18 +51,11 @@
     "webpack": "^4.20.2",
     "webpack-stream": "^4.0.3",
     "wintersmith": "^2.4.1",
-    "yargs": "^11.1.0",
-    "http-proxy-middleware": "^0.19.0",
-    "@types/pouchdb": "^6.3.2",
-    "gulp-connect": "^5.6.1",
-    "pouchdb": "^7.0.0",
-    "pouchdb-server": "^4.1.0",
-    "electron-builder": "^20.28.4",
-    "electron": "^2.0.12"
+    "yargs": "^11.1.0"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mozilla/pdf.js.git"
+    "url": "git://github.com/sherylynn/pdf-sync.git"
   },
   "license": "Apache-2.0",
   "scripts": {
@@ -64,6 +64,7 @@
     "db_sql": "pouchdb-server --port 3456 --host 0.0.0.0 --sqlite --dir ./db",
     "db_level": "pouchdb-server --port 3456 --host 0.0.0.0 --dir ./db",
     "app": "electron ./ --debug",
+    "dist_all": "electron-builder -mwl --x64",
     "dist_win": "electron-builder --win --x64",
     "dist_mac": "electron-builder --mac --x64",
     "dist_arm": "electron-builder --linux --armv7l",
@@ -71,7 +72,9 @@
     "build": "gulp generic",
     "test": "gulp lint unittestcli externaltest"
   },
-  "dependencies": {},
+  "dependencies": {
+    "electron-updater": "^3.1.2"
+  },
   "build": {
     "appId": "com.sherylynn.pdf-sync",
     "mac": {
@@ -87,12 +90,12 @@
       ],
       "maintainer": "sherylynn"
     },
-    "win":{
-      "target":[
+    "win": {
+      "target": [
         "nsis"
       ]
     },
-    "nsis":{
+    "nsis": {
       "oneClick": false,
       "perMachine": true,
       "allowElevation": true,
@@ -100,6 +103,17 @@
       "createDesktopShortcut": true,
       "runAfterFinish": true
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "sherylynn",
+        "vPrefixedTagName": false,
+        "host": "github.com",
+        "protocol": "https",
+        "private": false,
+        "releaseType": "draft"
+      }
+    ],
     "directories": {
       "buildResources": "./",
       "output": "./build/app"
