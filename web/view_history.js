@@ -21,7 +21,8 @@ import { config } from '../config';
 let url = new URL(window.location.href);
 // electron or gulp server
 // '/db' for gulp proxy
-let origin = url.protocol == 'file:' ? config.server_origin : url.origin + '/db';
+// let origin = url.protocol == 'file:' ? config.server_origin : url.origin + '/db';
+let origin = config.server_origin;
 
 /**
  * View History - This is a utility for saving various view parameters for
