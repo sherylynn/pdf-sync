@@ -633,10 +633,19 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
         .pipe(postcss([autoprefixer(AUTOPREFIXER_CONFIG)]))
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
 
-    // gulp.src('web/compressed.tracemonkey-pldi-09.pdf')
+    // gulp.src('readme/pdf-readme.pdf')
     //     .pipe(gulp.dest(GENERIC_DIR + 'web')),
   ]);
 });
+gulp.task('markdown2pdf', function () {
+  var rename = require('gulp-rename');
+  var markdownpdf = require('gulp-markdown-pdf');
+  gulp.src('readme/pdf-readme.md')
+  .pipe(rename('pdf-readme.pdf'))
+  .pipe(markdownpdf())
+  .pipe(gulp.dest(GENERIC_DIR + 'web'));
+});
+gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
 
 gulp.task('components', ['buildnumber'], function () {
   console.log();
@@ -698,8 +707,8 @@ gulp.task('minified-pre', ['buildnumber', 'locale'], function () {
         .pipe(postcss([autoprefixer(AUTOPREFIXER_CONFIG)]))
         .pipe(gulp.dest(MINIFIED_DIR + 'web')),
 
-    // gulp.src('web/compressed.tracemonkey-pldi-09.pdf')
-    //     .pipe(gulp.dest(MINIFIED_DIR + 'web')),
+    gulp.src('readme/pdf-readme.pdf')
+        .pipe(gulp.dest(MINIFIED_DIR + 'web')),
   ]);
 });
 
@@ -1135,6 +1144,7 @@ gulp.task('cor', function () {
           ];
       },
   });
+  console.log('### http://127.0.0.1:9000/build/generic/web/viewer.html');
 });
 gulp.task('app', ['server', 'cor']);
 

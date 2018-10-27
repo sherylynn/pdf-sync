@@ -1,6 +1,6 @@
 {
   "name": "pdf-sync",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "main.js",
   "author": "sherylynn",
   "email": "352281674@qq.com",
@@ -26,6 +26,7 @@
     "gulp": "^3.9.1",
     "gulp-cli": "^2.0.1",
     "gulp-connect": "^5.6.1",
+    "gulp-markdown-pdf": "^6.0.0",
     "gulp-postcss": "^7.0.1",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
@@ -71,7 +72,9 @@
     "dist_arm": "electron-builder --linux --armv7l",
     "dist_deb": "electron-builder --linux ",
     "build": "gulp generic",
-    "publish":"build --mac --win --linux --publish always",
+    "prebuild": "gulp electron-prebuild",
+    "pub_win": "build --win --publish always",
+    "pub_all": "build --mac --win --linux --publish always",
     "test": "gulp lint unittestcli externaltest"
   },
   "dependencies": {
