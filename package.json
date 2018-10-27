@@ -1,6 +1,6 @@
 {
   "name": "pdf-sync",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "main.js",
   "author": "sherylynn",
   "email": "352281674@qq.com",
@@ -40,6 +40,7 @@
     "mkdirp": "^0.5.1",
     "node-ensure": "^0.0.0",
     "pouchdb": "^7.0.0",
+    "pouchdb-authentication": "^1.1.3",
     "pouchdb-server": "^4.1.0",
     "rimraf": "^2.6.2",
     "streamqueue": "^1.1.2",
@@ -110,7 +111,6 @@
         {
           "target": "nsis",
           "arch": [
-            "x64",
             "ia32"
           ]
         }
@@ -129,7 +129,7 @@
         "provider": "github",
         "vPrefixedTagName": true,
         "private": false,
-        "owner":"sherylynn",
+        "owner": "sherylynn",
         "releaseType": "release"
       }
     ],

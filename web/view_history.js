@@ -15,12 +15,13 @@
 
 const DEFAULT_VIEW_HISTORY_CACHE_SIZE = 20;
 import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
+PouchDB.plugin(require('../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js'));
 import { config } from '../config';
 // import PouchDB from 'pouch// console.log(databaseStr);
 let url = new URL(window.location.href);
 // electron or gulp server
 // '/db' for gulp proxy
-let origin = url.protocol=='file:' ? config.server_origin:url.origin+'/db';
+let origin = url.protocol == 'file:' ? config.server_origin : url.origin + '/db';
 
 /**
  * View History - This is a utility for saving various view parameters for
@@ -64,12 +65,19 @@ class ViewHistory {
     let databaseStr = JSON.stringify(this.database);
 
     if (typeof PDFJSDev !== 'undefined' &&
-        PDFJSDev.test('FIREFOX || MOZCENTRAL')) {
+      PDFJSDev.test('FIREFOX || MOZCENTRAL')) {
       sessionStorage.setItem('pdfjs.history', databaseStr);
       return;
     }
 
-    let db = new PouchDB(origin + '/pdf_js');
+    let db = new PouchDB(origin + '/pdf-sync');
+    db.logIn(config.server_admin, config.server_passwd, function (err, res) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('haved login.');
+      }
+    });
     try {
       let doc = await db.get('pdf_history');
       try {
@@ -99,11 +107,18 @@ class ViewHistory {
 
   async _readFromStorage() {
     if (typeof PDFJSDev !== 'undefined' &&
-        PDFJSDev.test('FIREFOX || MOZCENTRAL')) {
+      PDFJSDev.test('FIREFOX || MOZCENTRAL')) {
       return sessionStorage.getItem('pdfjs.history');
     }
     // console.log(databaseStr);
-    let db = new PouchDB(origin + '/pdf_js');
+    let db = new PouchDB(origin + '/pdf-sync');
+    db.logIn(config.server_admin, config.server_passwd, function (err, res) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('haved login.');
+      }
+    });
     try {
       let doc = await db.get('pdf_history');
       console.log(doc);

@@ -642,7 +642,9 @@ gulp.task('markdown2pdf', function () {
   var markdownpdf = require('gulp-markdown-pdf');
   gulp.src('readme/pdf-readme.md')
   .pipe(rename('pdf-readme.pdf'))
-  .pipe(markdownpdf())
+  .pipe(markdownpdf({
+    paperFormat: 'A5',
+  }))
   .pipe(gulp.dest(GENERIC_DIR + 'web'));
 });
 gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
