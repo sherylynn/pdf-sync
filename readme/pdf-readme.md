@@ -38,9 +38,9 @@ set permissions for your db {add user in admins options}
 
 ### Config.js
 
-change string to your setting which configure above
+change string to your setting which configure above in ./config.js
 
-将源码目录中config.js的相关信息配置成上述设定
+将源码根目录中config.js的相关信息配置成上述设定
 
     const config = {
     //  server_origin:'http://127.0.0.1:3456'
