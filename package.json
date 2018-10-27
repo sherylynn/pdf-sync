@@ -78,6 +78,7 @@
     "test": "gulp lint unittestcli externaltest"
   },
   "dependencies": {
+    "electron-log": "^2.2.17",
     "electron-updater": "^3.1.2"
   },
   "build": {
@@ -128,7 +129,8 @@
         "provider": "github",
         "vPrefixedTagName": true,
         "private": false,
-        "releaseType": "prerelease"
+        "owner":"sherylynn",
+        "releaseType": "release"
       }
     ],
     "directories": {
