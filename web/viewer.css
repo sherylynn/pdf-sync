@@ -1000,6 +1000,10 @@ html[dir="rtl"] .secondaryToolbarButton > span {
   content: url(images/secondaryToolbarButton-documentProperties.png);
 }
 
+.secondaryToolbarButton.login::before {
+  content: url(images/toolbarButton-viewThumbnail.png);
+}
+
 .verticalToolbarSeparator {
   display: block;
   padding: 8px 0;
@@ -1421,6 +1425,13 @@ html[dir='rtl'] .outlineItemToggler::before {
   width: 200px;
 }
 
+#loginOverlay > .dialog {
+  text-align: center;
+}
+#loginOverlay .toolbarField {
+  width: 200px;
+}
+
 #documentPropertiesOverlay > .dialog {
   text-align: left;
 }
@@ -1745,6 +1756,10 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 
   .secondaryToolbarButton.documentProperties::before {
     content: url(images/secondaryToolbarButton-documentProperties@2x.png);
+  }
+
+  .secondaryToolbarButton.login::before {
+    content: url(images/toolbarButton-viewThumbnail@2x.png);
   }
 
   .outlineItemToggler::before {

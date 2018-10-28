@@ -92,6 +92,8 @@ class SecondaryToolbar {
         eventDetails: { mode: SpreadMode.EVEN, }, close: true, },
       { element: options.documentPropertiesButton,
         eventName: 'documentproperties', close: true, },
+      { element: options.loginButton,
+        eventName: 'login', close: true, },
     ];
     this.items = {
       firstPage: options.firstPageButton,

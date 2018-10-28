@@ -103,6 +103,7 @@ function getViewerConfiguration() {
       spreadOddButton: document.getElementById('spreadOdd'),
       spreadEvenButton: document.getElementById('spreadEven'),
       documentPropertiesButton: document.getElementById('documentProperties'),
+      loginButton: document.getElementById('loginButton'),
     },
     fullscreen: {
       contextFirstPage: document.getElementById('contextFirstPage'),
@@ -168,6 +169,14 @@ function getViewerConfiguration() {
         'pageSize': document.getElementById('pageSizeField'),
         'linearized': document.getElementById('linearizedField'),
       },
+    },
+    login: {
+      overlayName: 'loginOverlay',
+      container: document.getElementById('loginOverlay'),
+      label: document.getElementById('loginPasswordText'),
+      input: document.getElementById('loginPassword'),
+      submitButton: document.getElementById('loginPasswordSubmit'),
+      cancelButton: document.getElementById('loginPasswordCancel'),
     },
     errorWrapper: {
       container: document.getElementById('errorWrapper'),

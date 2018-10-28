@@ -35,6 +35,7 @@ import { OverlayManager } from './overlay_manager';
 import { PasswordPrompt } from './password_prompt';
 import { PDFAttachmentViewer } from './pdf_attachment_viewer';
 import { PDFDocumentProperties } from './pdf_document_properties';
+import { LoginPrompt } from './login_prompt';
 import { PDFFindBar } from './pdf_find_bar';
 import { PDFFindController } from './pdf_find_controller';
 import { PDFHistory } from './pdf_history';
@@ -94,6 +95,7 @@ let PDFViewerApplication = {
   pdfPresentationMode: null,
   /** @type {PDFDocumentProperties} */
   pdfDocumentProperties: null,
+  loginPrompt: null,
   /** @type {PDFLinkService} */
   pdfLinkService: null,
   /** @type {PDFHistory} */
@@ -356,6 +358,10 @@ let PDFViewerApplication = {
     this.pdfDocumentProperties =
       new PDFDocumentProperties(appConfig.documentProperties,
                                 this.overlayManager, eventBus, this.l10n);
+
+    console.log(appConfig.login)
+    this.loginPrompt = new LoginPrompt(appConfig.login,
+                                             this.overlayManager, this.l10n);
 
     this.pdfCursorTools = new PDFCursorTools({
       container,
@@ -1317,6 +1323,7 @@ let PDFViewerApplication = {
     eventBus.on('switchspreadmode', webViewerSwitchSpreadMode);
     eventBus.on('spreadmodechanged', webViewerSpreadModeChanged);
     eventBus.on('documentproperties', webViewerDocumentProperties);
+    eventBus.on('login', webViewerLogin);
     eventBus.on('find', webViewerFind);
     eventBus.on('findfromurlhash', webViewerFindFromUrlHash);
     eventBus.on('updatefindmatchescount', webViewerUpdateFindMatchesCount);
@@ -1390,6 +1397,7 @@ let PDFViewerApplication = {
     eventBus.off('switchspreadmode', webViewerSwitchSpreadMode);
     eventBus.off('spreadmodechanged', webViewerSpreadModeChanged);
     eventBus.off('documentproperties', webViewerDocumentProperties);
+    eventBus.off('login', webViewerLogin);
     eventBus.off('find', webViewerFind);
     eventBus.off('findfromurlhash', webViewerFindFromUrlHash);
     eventBus.off('updatefindmatchescount', webViewerUpdateFindMatchesCount);
@@ -1936,6 +1944,9 @@ function webViewerSwitchSpreadMode(evt) {
 }
 function webViewerDocumentProperties() {
   PDFViewerApplication.pdfDocumentProperties.open();
+}
+function webViewerLogin() {
+  PDFViewerApplication.loginPrompt.open();
 }
 
 function webViewerFind(evt) {

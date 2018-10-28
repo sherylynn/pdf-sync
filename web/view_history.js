@@ -15,8 +15,12 @@
 
 const DEFAULT_VIEW_HISTORY_CACHE_SIZE = 20;
 import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
-PouchDB.plugin(require('../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js'));
-import { config } from '../config';
+PouchDB.plugin(require(
+  '../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js'));
+import {
+  config
+} from '../config';
+let md5 = require('../node_modules/js-md5/build/md5.min.js');
 // import PouchDB from 'pouch// console.log(databaseStr);
 let url = new URL(window.location.href);
 // electron or gulp server
@@ -55,11 +59,73 @@ class ViewHistory {
         }
       }
       if (index === -1) {
-        index = database.files.push({ fingerprint: this.fingerprint, }) - 1;
+        index = database.files.push({
+          fingerprint: this.fingerprint,
+        }) - 1;
       }
       this.file = database.files[index];
       this.database = database;
     });
+  }
+
+  async _checkLogState() {
+    let username = localStorage.getItem('pdf-sync.username') ? localStorage.getItem(
+      'pdf-sync.username') : 'guest';
+    let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
+      'pdf-sync.passwd') : '******';
+    if (localStorage.getItem('pdf-sync.logState') === 'logged') {
+
+      // }else if(localStorage.getItem('pdf-sync.logState')===''){
+    } else {
+      let _username = prompt('What is your username ', 'guest');
+      let _passwd = md5(prompt('What is your password', '******'));
+      username = _username ? _username : 'guest';
+      passwd = _passwd ? _passwd : '******';
+      let db = new PouchDB(origin + '/pdf-sync');
+      db.logIn(config.server_admin, config.server_passwd, function (err, res) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('haved login.');
+        }
+      });
+      try {
+        let doc = await db.get(username);
+        try {
+          if (doc[passwd] !== passwd) {
+            alert('error passwd');
+          } else if (doc[passwd] === passwd) {
+            let res = await db.put({
+              _id: username,
+              username,
+              passwd,
+              _rev: doc._rev,
+            });
+            localStorage.setItem('pdf-sync.username', username);
+            localStorage.setItem('pdf-sync.passwd', passwd);
+            localStorage.setItem('pdf-sync.logState', 'logged');
+            console.log(res);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      } catch (err) {
+        console.log(err);
+        try {
+          let res = await db.put({
+            _id: username,
+            username,
+            passwd,
+          });
+          localStorage.setItem('pdf-sync.username', username);
+          localStorage.setItem('pdf-sync.passwd', passwd);
+          localStorage.setItem('pdf-sync.logState', 'logged');
+          console.log(res);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
   }
 
   async _writeToStorage() {
@@ -70,7 +136,7 @@ class ViewHistory {
       sessionStorage.setItem('pdfjs.history', databaseStr);
       return;
     }
-
+    this._checkLogState();
     let db = new PouchDB(origin + '/pdf-sync');
     db.logIn(config.server_admin, config.server_passwd, function (err, res) {
       if (err) {
@@ -117,7 +183,7 @@ class ViewHistory {
       if (err) {
         console.log(err);
       } else {
-        console.log('haved login.');
+        console.log('haved login admin.');
       }
     });
     try {
