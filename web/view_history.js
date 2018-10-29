@@ -22,6 +22,11 @@ import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
 import PouchdbAuthentication from '../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js';
 PouchDB.plugin(PouchdbAuthentication);
 
+let username = localStorage.getItem('pdf-sync.username') ? localStorage.getItem(
+  'pdf-sync.username') : 'guest';
+let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
+  'pdf-sync.passwd') : md5('******');
+
 // import PouchDB from 'pouch// console.log(databaseStr);
 let url = new URL(window.location.href);
 // electron or gulp server
@@ -137,13 +142,14 @@ class ViewHistory {
       sessionStorage.setItem('pdfjs.history', databaseStr);
       return;
     }
-    this._checkLogState();
 
     try {
-      let doc = await db.get('pdf_history');
+      let doc = await db.get(username);
       try {
         let res = await db.put({
-          _id: 'pdf_history',
+          _id: username,
+          username,
+          passwd,
           databaseStr,
           _rev: doc._rev,
         });
@@ -155,7 +161,9 @@ class ViewHistory {
       console.log(err);
       try {
         let res = await db.put({
-          _id: 'pdf_history',
+          _id: username,
+          username,
+          passwd,
           databaseStr,
         });
         console.log(res);
@@ -172,16 +180,9 @@ class ViewHistory {
       return sessionStorage.getItem('pdfjs.history');
     }
     // console.log(databaseStr);
-    let db = new PouchDB(origin + '/pdf-sync');
-    db.logIn(config.server_admin, config.server_passwd, function (err, res) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('haved login admin.');
-      }
-    });
+
     try {
-      let doc = await db.get('pdf_history');
+      let doc = await db.get(username);
       console.log(doc);
       return doc['databaseStr'];
     } catch (err) {
