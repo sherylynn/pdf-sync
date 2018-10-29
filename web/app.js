@@ -31,11 +31,11 @@ import { PDFRenderingQueue, RenderingStates } from './pdf_rendering_queue';
 import { PDFSidebar, SidebarView } from './pdf_sidebar';
 import { AppOptions } from './app_options';
 import { getGlobalEventBus } from './dom_events';
+import { LoginPrompt } from './login_prompt';
 import { OverlayManager } from './overlay_manager';
 import { PasswordPrompt } from './password_prompt';
 import { PDFAttachmentViewer } from './pdf_attachment_viewer';
 import { PDFDocumentProperties } from './pdf_document_properties';
-import { LoginPrompt } from './login_prompt';
 import { PDFFindBar } from './pdf_find_bar';
 import { PDFFindController } from './pdf_find_controller';
 import { PDFHistory } from './pdf_history';
@@ -1609,6 +1609,7 @@ function webViewerInitialized() {
       PDFViewerApplication.error(msg, reason);
     });
   }
+  PDFViewerApplication.loginPrompt.open()
 }
 
 let webViewerOpenFileViaURL;

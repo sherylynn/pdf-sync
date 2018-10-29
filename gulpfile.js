@@ -645,9 +645,11 @@ gulp.task('markdown2pdf', function () {
   .pipe(markdownpdf({
     paperFormat: 'A5',
   }))
-  .pipe(gulp.dest(GENERIC_DIR + 'web'));
+  // .pipe(gulp.dest(GENERIC_DIR + 'web'));
+  .pipe(gulp.dest('web'));
 });
-gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
+// gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
+gulp.task('electron-prebuild', ['markdown2pdf', 'generic', ]);
 
 gulp.task('components', ['buildnumber'], function () {
   console.log();
@@ -1146,7 +1148,7 @@ gulp.task('cor', function () {
           ];
       },
   });
-  console.log('### http://127.0.0.1:9000/build/generic/web/viewer.html');
+  console.log('### http://127.0.0.1:9000/web/viewer.html');
 });
 gulp.task('app', ['server', 'cor']);
 

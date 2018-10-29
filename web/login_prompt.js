@@ -42,6 +42,7 @@ class LoginPrompt {
     this.input = options.input;
     this.submitButton = options.submitButton;
     this.cancelButton = options.cancelButton;
+    this.resetButton = options.resetButton;
     this.overlayManager = overlayManager;
     this.l10n = l10n;
 
@@ -51,6 +52,7 @@ class LoginPrompt {
     // Attach the event listeners.
     this.submitButton.addEventListener('click', this.verify.bind(this));
     this.cancelButton.addEventListener('click', this.close.bind(this));
+    this.resetButton.addEventListener('click', this.close.bind(this));
     this.input.addEventListener('keydown', (e) => {
       if (e.keyCode === 13) { // Enter key
         this.verify();

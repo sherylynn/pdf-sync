@@ -14,20 +14,28 @@
  */
 
 const DEFAULT_VIEW_HISTORY_CACHE_SIZE = 20;
-import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
-PouchDB.plugin(require(
-  '../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js'));
 import {
   config
 } from '../config';
-let md5 = require('../node_modules/js-md5/build/md5.min.js');
+import md5 from '../node_modules/js-md5/build/md5.min.js';
+import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
+import PouchdbAuthentication from '../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js';
+PouchDB.plugin(PouchdbAuthentication);
+
 // import PouchDB from 'pouch// console.log(databaseStr);
 let url = new URL(window.location.href);
 // electron or gulp server
 // '/db' for gulp proxy
 // let origin = url.protocol == 'file:' ? config.server_origin : url.origin + '/db';
 let origin = config.server_origin;
-
+let db = new PouchDB(origin + '/pdf-sync');
+db.logIn(config.server_admin, config.server_passwd, function (err, res) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('haved login.');
+  }
+});
 /**
  * View History - This is a utility for saving various view parameters for
  *                recently opened files.
@@ -81,20 +89,13 @@ class ViewHistory {
       let _passwd = md5(prompt('What is your password', '******'));
       username = _username ? _username : 'guest';
       passwd = _passwd ? _passwd : '******';
-      let db = new PouchDB(origin + '/pdf-sync');
-      db.logIn(config.server_admin, config.server_passwd, function (err, res) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log('haved login.');
-        }
-      });
+
       try {
         let doc = await db.get(username);
         try {
-          if (doc[passwd] !== passwd) {
+          if (doc.passwd !== passwd) {
             alert('error passwd');
-          } else if (doc[passwd] === passwd) {
+          } else if (doc.passwd === passwd) {
             let res = await db.put({
               _id: username,
               username,
@@ -137,14 +138,7 @@ class ViewHistory {
       return;
     }
     this._checkLogState();
-    let db = new PouchDB(origin + '/pdf-sync');
-    db.logIn(config.server_admin, config.server_passwd, function (err, res) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('haved login.');
-      }
-    });
+
     try {
       let doc = await db.get('pdf_history');
       try {
