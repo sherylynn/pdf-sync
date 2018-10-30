@@ -605,6 +605,18 @@ function preprocessHTML(source, defines) {
   return createStringSource(source.substr(i + 1), out);
 }
 
+gulp.task('markdown2pdf', function () {
+  var rename = require('gulp-rename');
+  var markdownpdf = require('gulp-markdown-pdf');
+  gulp.src('readme/pdf-readme.md')
+  .pipe(rename('pdf-readme.pdf'))
+  .pipe(markdownpdf({
+    paperFormat: 'A5',
+  }))
+  // .pipe(gulp.dest(GENERIC_DIR + 'web'));
+  .pipe(gulp.dest('web'));
+});
+
 // Builds the generic production viewer that should be compatible with most
 // modern HTML5 browsers.
 gulp.task('generic', ['buildnumber', 'locale'], function () {
@@ -633,21 +645,11 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
         .pipe(postcss([autoprefixer(AUTOPREFIXER_CONFIG)]))
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
 
-    // gulp.src('readme/pdf-readme.pdf')
-    //     .pipe(gulp.dest(GENERIC_DIR + 'web')),
+    gulp.src('web/pdf-readme.pdf')
+        .pipe(gulp.dest(GENERIC_DIR + 'web')),
   ]);
 });
-gulp.task('markdown2pdf', function () {
-  var rename = require('gulp-rename');
-  var markdownpdf = require('gulp-markdown-pdf');
-  gulp.src('readme/pdf-readme.md')
-  .pipe(rename('pdf-readme.pdf'))
-  .pipe(markdownpdf({
-    paperFormat: 'A5',
-  }))
-  // .pipe(gulp.dest(GENERIC_DIR + 'web'));
-  .pipe(gulp.dest('web'));
-});
+
 // gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
 gulp.task('electron-prebuild', ['markdown2pdf', 'generic', ]);
 

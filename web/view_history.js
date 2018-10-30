@@ -187,10 +187,10 @@ class ViewHistory {
       return doc['databaseStr'];
     } catch (err) {
       console.log(err);
+      return localStorage.getItem('pdfjs.history');
     }
     //
 
-    return localStorage.getItem('pdfjs.history');
   }
 
   async set(name, val) {
