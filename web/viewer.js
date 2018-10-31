@@ -173,8 +173,10 @@ function getViewerConfiguration() {
     login: {
       overlayName: 'loginOverlay',
       container: document.getElementById('loginOverlay'),
-      label: document.getElementById('loginPasswordText'),
-      input: document.getElementById('loginPassword'),
+      username_label: document.getElementById('loginUsernameText'),
+      passwd_label: document.getElementById('loginPasswordText'),
+      username_input: document.getElementById('loginUsername'),
+      passwd_input: document.getElementById('loginPassword'),
       submitButton: document.getElementById('loginPasswordSubmit'),
       cancelButton: document.getElementById('loginPasswordCancel'),
       resetButton: document.getElementById('loginPasswordReset'),

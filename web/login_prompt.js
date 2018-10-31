@@ -15,6 +15,29 @@
 
 import { NullL10n } from './ui_utils';
 import { PasswordResponses } from 'pdfjs-lib';
+import {
+  config
+} from '../config';
+import md5 from '../node_modules/js-md5/build/md5.min.js';
+import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
+import PouchdbAuthentication from '../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js';
+PouchDB.plugin(PouchdbAuthentication);
+
+// import PouchDB from 'pouch// console.log(databaseStr);
+let url = new URL(window.location.href);
+// electron or gulp server
+// '/db' for gulp proxy
+// let origin = url.protocol == 'file:' ? config.server_origin : url.origin + '/db';
+let origin = config.server_origin;
+let db = new PouchDB(origin + '/pdf-sync');
+db.logIn(config.server_admin, config.server_passwd, function (err, res) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('haved login.');
+  }
+});
+
 
 /**
  * @typedef {Object} PasswordPromptOptions
@@ -38,8 +61,10 @@ class LoginPrompt {
   constructor(options, overlayManager, l10n = NullL10n) {
     this.overlayName = options.overlayName;
     this.container = options.container;
-    this.label = options.label;
-    this.input = options.input;
+    this.username_label = options.username_label;
+    this.passwd_label = options.passwd_label;
+    this.username_input = options.username_input;
+    this.passwd_input = options.passwd_input;
     this.submitButton = options.submitButton;
     this.cancelButton = options.cancelButton;
     this.resetButton = options.resetButton;
@@ -52,8 +77,8 @@ class LoginPrompt {
     // Attach the event listeners.
     this.submitButton.addEventListener('click', this.verify.bind(this));
     this.cancelButton.addEventListener('click', this.close.bind(this));
-    this.resetButton.addEventListener('click', this.close.bind(this));
-    this.input.addEventListener('keydown', (e) => {
+    this.resetButton.addEventListener('click', this.reset.bind(this));
+    this.passwd_input.addEventListener('keydown', (e) => {
       if (e.keyCode === 13) { // Enter key
         this.verify();
       }
@@ -65,7 +90,7 @@ class LoginPrompt {
 
   open() {
     this.overlayManager.open(this.overlayName).then(() => {
-      this.input.focus();
+      this.username_input.focus();
 
       let promptString;
       if (this.reason === PasswordResponses.INCORRECT_PASSWORD) {
@@ -77,19 +102,89 @@ class LoginPrompt {
       }
 
       promptString.then((msg) => {
-        this.label.textContent = msg;
+        this.passwd_label.textContent = msg;
       });
     });
   }
 
+  reset() {
+    this.username_input.value = '';
+    this.passwd_input.value = '';
+    localStorage.removeItem('pdf-sync.username');
+    localStorage.removeItem('pdf-sync.passwd');
+    localStorage.removeItem('pdf-sync.logState');
+    // this.username_label.textContent = 'username had reseted';
+    // this.passwd_label.textContent = 'password had reseted';
+
+    // localStorage.setItem('pdf-sync.username', null);
+    // localStorage.setItem('pdf-sync.passwd', null);
+    // localStorage.setItem('pdf-sync.logState', null);
+  }
+
   close() {
     this.overlayManager.close(this.overlayName).then(() => {
-      this.input.value = '';
+      this.username_input.value = '';
+      this.passwd_input.value = '';
     });
   }
 
+  async _checkLogState() {
+    let username = localStorage.getItem('pdf-sync.username') ? localStorage.getItem(
+      'pdf-sync.username') : 'guest';
+    let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
+      'pdf-sync.passwd') : '******';
+    if (localStorage.getItem('pdf-sync.logState') === 'logged') {
+
+      // }else if(localStorage.getItem('pdf-sync.logState')===''){
+    } else {
+      let _username = prompt('What is your username ', 'guest');
+      let _passwd = md5(prompt('What is your password', '******'));
+      username = _username ? _username : 'guest';
+      passwd = _passwd ? _passwd : '******';
+
+      try {
+        let doc = await db.get(username);
+        try {
+          if (doc.passwd !== passwd) {
+            alert('error passwd');
+          } else if (doc.passwd === passwd) {
+            let res = await db.put({
+              _id: username,
+              username,
+              passwd,
+              _rev: doc._rev,
+            });
+            localStorage.setItem('pdf-sync.username', username);
+            localStorage.setItem('pdf-sync.passwd', passwd);
+            localStorage.setItem('pdf-sync.logState', 'logged');
+            console.log(res);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      } catch (err) {
+        console.log(err);
+        try {
+          let res = await db.put({
+            _id: username,
+            username,
+            passwd,
+          });
+          localStorage.setItem('pdf-sync.username', username);
+          localStorage.setItem('pdf-sync.passwd', passwd);
+          localStorage.setItem('pdf-sync.logState', 'logged');
+          console.log(res);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
+
   verify() {
-    let password = this.input.value;
+    let username = this.username_input.value;
+    let password = this.passwd_input.value;
+
     if (password && password.length > 0) {
       this.close();
       return this.updateCallback(password);
