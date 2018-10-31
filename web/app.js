@@ -1609,7 +1609,7 @@ function webViewerInitialized() {
       PDFViewerApplication.error(msg, reason);
     });
   }
-  PDFViewerApplication.loginPrompt.open()
+  PDFViewerApplication.loginPrompt.autoOpen();
 }
 
 let webViewerOpenFileViaURL;

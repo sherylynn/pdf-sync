@@ -22,10 +22,7 @@ import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
 import PouchdbAuthentication from '../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js';
 PouchDB.plugin(PouchdbAuthentication);
 
-let username = localStorage.getItem('pdf-sync.username') ? localStorage.getItem(
-  'pdf-sync.username') : 'guest';
-let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
-  'pdf-sync.passwd') : md5('******');
+
 
 // import PouchDB from 'pouch// console.log(databaseStr);
 let url = new URL(window.location.href);
@@ -83,7 +80,10 @@ class ViewHistory {
 
   async _writeToStorage() {
     let databaseStr = JSON.stringify(this.database);
-
+    let username = localStorage.getItem('pdf-sync.username') ? localStorage.getItem(
+      'pdf-sync.username') : 'guest';
+    let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
+      'pdf-sync.passwd') : md5('******');
     if (typeof PDFJSDev !== 'undefined' &&
       PDFJSDev.test('FIREFOX || MOZCENTRAL')) {
       sessionStorage.setItem('pdfjs.history', databaseStr);
@@ -122,6 +122,10 @@ class ViewHistory {
   }
 
   async _readFromStorage() {
+    let username = localStorage.getItem('pdf-sync.username') ? localStorage.getItem(
+      'pdf-sync.username') : 'guest';
+    let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
+      'pdf-sync.passwd') : md5('******');
     if (typeof PDFJSDev !== 'undefined' &&
       PDFJSDev.test('FIREFOX || MOZCENTRAL')) {
       return sessionStorage.getItem('pdfjs.history');

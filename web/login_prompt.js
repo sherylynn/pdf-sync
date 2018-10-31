@@ -13,8 +13,12 @@
  * limitations under the License.
  */
 
-import { NullL10n } from './ui_utils';
-import { PasswordResponses } from 'pdfjs-lib';
+import {
+  NullL10n
+} from './ui_utils';
+import {
+  PasswordResponses
+} from 'pdfjs-lib';
 import {
   config
 } from '../config';
@@ -37,7 +41,6 @@ db.logIn(config.server_admin, config.server_passwd, function (err, res) {
     console.log('haved login.');
   }
 });
-
 
 /**
  * @typedef {Object} PasswordPromptOptions
@@ -85,10 +88,29 @@ class LoginPrompt {
     });
 
     this.overlayManager.register(this.overlayName, this.container,
-                                 this.close.bind(this), true);
+      this.close.bind(this), true);
+  }
+
+  async autoOpen() {
+    let username = localStorage.getItem(
+      'pdf-sync.username') ? localStorage.getItem(
+      'pdf-sync.username') : 'guest';
+    let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
+      'pdf-sync.passwd') : md5('******');
+    if (await this._checkAndReg(username, passwd)) {
+      console.log('loged');
+      if (username === 'guest') {
+        this.open();
+      }
+    } else {
+      this.open();
+    }
   }
 
   open() {
+    let username = localStorage.getItem(
+      'pdf-sync.username') ? localStorage.getItem(
+      'pdf-sync.username') : 'guest';
     this.overlayManager.open(this.overlayName).then(() => {
       this.username_input.focus();
 
@@ -103,6 +125,11 @@ class LoginPrompt {
 
       promptString.then((msg) => {
         this.passwd_label.textContent = msg;
+        this.username_input.value = username;
+        if (username == 'guest') {
+          this.passwd_input.value = '******';
+        }
+        //
       });
     });
   }
@@ -128,66 +155,51 @@ class LoginPrompt {
     });
   }
 
-  async _checkLogState() {
-    let username = localStorage.getItem('pdf-sync.username') ? localStorage.getItem(
-      'pdf-sync.username') : 'guest';
-    let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
-      'pdf-sync.passwd') : '******';
-    if (localStorage.getItem('pdf-sync.logState') === 'logged') {
-
-      // }else if(localStorage.getItem('pdf-sync.logState')===''){
-    } else {
-      let _username = prompt('What is your username ', 'guest');
-      let _passwd = md5(prompt('What is your password', '******'));
-      username = _username ? _username : 'guest';
-      passwd = _passwd ? _passwd : '******';
-
+  async _checkAndReg(username, passwd) {
+    try {
+      let doc = await db.get(username);
+      if (doc.passwd !== passwd) {
+        console.log('error passwd');
+        return false;
+      } else if (doc.passwd === passwd) {
+        localStorage.setItem('pdf-sync.username', username);
+        localStorage.setItem('pdf-sync.passwd', passwd);
+        localStorage.setItem('pdf-sync.logState', 'logged');
+        return true;
+      }
+    } catch (err) {
+      console.log(err);
       try {
-        let doc = await db.get(username);
-        try {
-          if (doc.passwd !== passwd) {
-            alert('error passwd');
-          } else if (doc.passwd === passwd) {
-            let res = await db.put({
-              _id: username,
-              username,
-              passwd,
-              _rev: doc._rev,
-            });
-            localStorage.setItem('pdf-sync.username', username);
-            localStorage.setItem('pdf-sync.passwd', passwd);
-            localStorage.setItem('pdf-sync.logState', 'logged');
-            console.log(res);
-          }
-        } catch (err) {
-          console.log(err);
-        }
+        let res = await db.put({
+          _id: username,
+          username,
+          passwd,
+        });
+        localStorage.setItem('pdf-sync.username', username);
+        localStorage.setItem('pdf-sync.passwd', passwd);
+        localStorage.setItem('pdf-sync.logState', 'logged');
+        console.log(res);
+        return true;
       } catch (err) {
         console.log(err);
-        try {
-          let res = await db.put({
-            _id: username,
-            username,
-            passwd,
-          });
-          localStorage.setItem('pdf-sync.username', username);
-          localStorage.setItem('pdf-sync.passwd', passwd);
-          localStorage.setItem('pdf-sync.logState', 'logged');
-          console.log(res);
-        } catch (err) {
-          console.log(err);
-        }
+        console.log('maybe not internet');
+        return false;
       }
     }
   }
 
-  verify() {
+  async verify() {
     let username = this.username_input.value;
     let password = this.passwd_input.value;
 
     if (password && password.length > 0) {
-      this.close();
-      return this.updateCallback(password);
+      if (await this._checkAndReg(username, md5(password))) {
+        console.log(await this._checkAndReg(username, md5(password)));
+        this.close();
+      } else {
+        this.reset();
+      }
+      // return this.updateCallback(password);
     }
   }
 
