@@ -146,7 +146,7 @@ See https://github.com/adobe-type-tools/cmap-resources
             <div class="horizontalToolbarSeparator visibleLargeView"></div>
 
             <button id="loginButton" class="secondaryToolbarButton login toggled" title="Document Properties…" tabindex="68" data-l10n-id="document_properties">
-              <span >login</span>
+              <span data-l10n-id="login_status">login status</span>
             </button>
 
             <button id="firstPage" class="secondaryToolbarButton firstPage" title="Go to First Page" tabindex="56" data-l10n-id="first_page">
@@ -400,13 +400,13 @@ See https://github.com/adobe-type-tools/cmap-resources
         <div id="loginOverlay" class="container hidden">
           <div class="dialog">
             <div class="row">
-              <p id="loginUsernameText" data-l10n-id="">Username :[JUST CHANGE IN HOME]</p>
+              <p id="loginUsernameText" data-l10n-id="password_username">Enter the username:</p>
             </div>
             <div class="row">
               <input type="text" id="loginUsername" class="toolbarField">
             </div>
             <div class="row">
-              <p id="loginPasswordText" data-l10n-id="password_label">Enter the password to open this PDF file:</p>
+              <p id="loginPasswordText" data-l10n-id="password_passwd">Enter the password:</p>
             </div>
             <div class="row">
               <input type="password" id="loginPassword" class="toolbarField">
@@ -414,7 +414,7 @@ See https://github.com/adobe-type-tools/cmap-resources
             <div class="buttonRow">
               <button id="loginPasswordCancel" class="overlayButton"><span data-l10n-id="password_cancel">Cancel</span></button>
               <button id="loginPasswordSubmit" class="overlayButton"><span data-l10n-id="password_ok">OK</span></button>
-              <button id="loginPasswordReset" class="overlayButton"><span data-l10n-id="">Reset</span></button>
+              <button id="loginPasswordReset" class="overlayButton"><span data-l10n-id="password_reset">Reset</span></button>
             </div>
           </div>
         </div>

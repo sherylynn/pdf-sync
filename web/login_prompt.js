@@ -119,8 +119,8 @@ class LoginPrompt {
         promptString = this.l10n.get('password_invalid', null,
           'Invalid password. Please try again.');
       } else {
-        promptString = this.l10n.get('password_label', null,
-          'Enter the password to open this PDF file.');
+        promptString = this.l10n.get('password_passwd', null,
+          'Enter the password:');
       }
 
       promptString.then((msg) => {

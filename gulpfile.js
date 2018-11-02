@@ -651,7 +651,7 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
 });
 
 // gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
-gulp.task('electron-prebuild', ['markdown2pdf', 'generic', ]);
+gulp.task('electron-prebuild', ['markdown2pdf', 'generic',]);
 
 gulp.task('components', ['buildnumber'], function () {
   console.log();
@@ -1121,7 +1121,7 @@ gulp.task('server', function (done) {
 
   var WebServer = require('./test/webserver.js').WebServer;
   var server = new WebServer();
-  server.port = 8888;
+  server.port = 7777;
   server.start();
 });
 var connect = require('gulp-connect');
@@ -1141,7 +1141,7 @@ gulp.task('cor', function () {
                   },
               }),
               proxy(['/pdf'], {
-                target: 'http://127.0.0.1:8888',
+                target: 'http://127.0.0.1:7777',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/pdf': '/',
@@ -1152,7 +1152,26 @@ gulp.task('cor', function () {
   });
   console.log('### http://127.0.0.1:9000/web/viewer.html');
 });
-gulp.task('app', ['server', 'cor']);
+
+gulp.task('reload', () => {
+  gulp.src('./web/*')
+  .pipe(connect.reload());
+});
+
+gulp.task('js', () => {
+  gulp.src('./web/*.js')
+  .pipe(connect.reload());
+});
+
+gulp.task('watch', () => {
+  gulp.watch(['./web/*'], ['reload']);
+});
+
+gulp.task('pub_ser', () => {
+
+});
+
+gulp.task('app', ['server', 'cor', 'watch']);
 
 gulp.task('clean', function(callback) {
   console.log();
