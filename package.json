@@ -75,6 +75,7 @@
     "dist_deb": "electron-builder --linux ",
     "build": "gulp generic",
     "prebuild": "gulp electron-prebuild",
+    "pub_ser": "gulp pub_ser",
     "pub_win": "build --win --publish always",
     "pub_all": "build --mac --win --linux --publish always",
     "test": "gulp lint unittestcli externaltest"
@@ -138,6 +139,9 @@
         "private": false,
         "owner": "sherylynn",
         "releaseType": "release"
+      },{
+        "provider": "generic",
+        "url":"your_url"
       }
     ],
     "directories": {

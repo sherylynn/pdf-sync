@@ -651,7 +651,7 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
 });
 
 // gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
-gulp.task('electron-prebuild', ['markdown2pdf', 'generic',]);
+gulp.task('electron-prebuild', ['markdown2pdf', 'generic', ]);
 
 gulp.task('components', ['buildnumber'], function () {
   console.log();
@@ -1168,7 +1168,11 @@ gulp.task('watch', () => {
 });
 
 gulp.task('pub_ser', () => {
-
+  connect.server({
+    root: 'build/app',
+    port: 80,
+    livereload: true,
+  });
 });
 
 gulp.task('app', ['server', 'cor', 'watch']);
