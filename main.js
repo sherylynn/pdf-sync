@@ -1,13 +1,22 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  MenuItem
+} = require('electron');
 // import { autoUpdater } from "electron-updater"
+const {
+  autoUpdater,
+} = require('electron-updater');
+
 const log = require('electron-log');
-const { autoUpdater, } = require('electron-updater');
 const path = require('path');
 const debug = /--debug/.test(process.argv[2]);
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+
 function sendStatusToWindow(text) {
   log.info(text);
   win.webContents.send('message', text);
@@ -16,17 +25,29 @@ function sendStatusToWindow(text) {
 function createWindow() {
   // Create the browser window.
   log.info('starting');
-  win = new BrowserWindow({ width: 800, height: 600, });
+  win = new BrowserWindow({
+    width: 800,
+    height: 600,
+  });
 
   // and load the index.html of the app.
   // win.loadFile('/build/generic/web/viewer.html')
   win.loadURL(path.join('file://', __dirname, '/build/generic/web/viewer.html'));
   if (debug) {
-  // Open the DevTools.
-  win.webContents.openDevTools();
+    // Open the DevTools.
+    win.webContents.openDevTools();
   }
   // Emitted when the window is closed.
   autoUpdater.checkForUpdatesAndNotify();
+  win.webContents.on('context-menu', (e, params) => {
+    let menu=new Menu()
+    let message= 'o'
+    message = message + "f"
+    menu.append(new MenuItem({
+      label: message
+    }))
+    menu.popup(win, params.x, params.y)
+  })
   win.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
@@ -49,7 +70,8 @@ autoUpdater.on('error', (err) => {
 autoUpdater.on('download-progress', (progressObj) => {
   let log_message = 'Download speed: ' + progressObj.bytesPerSecond;
   log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-  log_message = log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')';
+  log_message = log_message + ' (' + progressObj.transferred + '/' +
+    progressObj.total + ')';
   sendStatusToWindow(log_message);
 });
 autoUpdater.on('update-downloaded', (info) => {
