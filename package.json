@@ -56,6 +56,7 @@
     "webpack": "^4.20.2",
     "webpack-stream": "^4.0.3",
     "wintersmith": "^2.4.1",
+    "natives": "^1.1.6",
     "yargs": "^11.1.0"
   },
   "repository": {
@@ -78,14 +79,13 @@
     "build": "gulp generic",
     "prebuild": "gulp electron-prebuild",
     "pub_ser": "gulp pub_ser",
-    "pub_win": "build --win --publish always",
-    "pub_all": "build --mac --win --linux --publish always",
+    "pub_win": "npm run prebuild && build --win --publish always",
+    "pub_all": "npm run prebuild && build --mac --win --linux --publish always",
     "test": "gulp lint unittestcli externaltest"
   },
   "dependencies": {
     "electron-log": "^2.2.17",
-    "electron-updater": "^3.1.2",
-    "natives": "^1.1.6"
+    "electron-updater": "^3.1.2"
   },
   "build": {
     "appId": "com.sherylynn.pdf-sync",
