@@ -46,6 +46,8 @@ import { PDFSidebarResizer } from './pdf_sidebar_resizer';
 import { PDFThumbnailViewer } from './pdf_thumbnail_viewer';
 import { PDFViewer } from './pdf_viewer';
 import { SecondaryToolbar } from './secondary_toolbar';
+import { SelectTranslate } from './select_translate';
+
 import { Toolbar } from './toolbar';
 import { ViewHistory } from './view_history';
 
@@ -360,6 +362,7 @@ let PDFViewerApplication = {
                                 this.overlayManager, eventBus, this.l10n);
 
     console.log(appConfig.login)
+    this.selectTranslate = new SelectTranslate();
     this.loginPrompt = new LoginPrompt(appConfig.login,
                                              this.overlayManager, this.l10n);
 
@@ -1610,6 +1613,7 @@ function webViewerInitialized() {
     });
   }
   PDFViewerApplication.loginPrompt.autoOpen();
+  PDFViewerApplication.selectTranslate.bind();
 }
 
 let webViewerOpenFileViaURL;

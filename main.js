@@ -50,6 +50,8 @@ function createWindow() {
       label: message
     }))
     menu.popup(win, params.x, params.y)
+    // alert(1) main中没有alert
+    // 需要在渲染进程中做
   })
   win.on('closed', function () {
     // Dereference the window object, usually you would store windows
