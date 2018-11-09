@@ -17,7 +17,8 @@ const DEFAULT_VIEW_HISTORY_CACHE_SIZE = 20;
 import {
   config
 } from '../config';
-import md5 from '../node_modules/js-md5/build/md5.min.js';
+import md5 from '../node_modules/blueimp-md5/js/md5.js'
+//import md5 from '../node_modules/js-md5/src/md5.js';
 import PouchDB from './../node_modules/pouchdb/dist/pouchdb.js';
 import PouchdbAuthentication from '../node_modules/pouchdb-authentication/dist/pouchdb.authentication.js';
 PouchDB.plugin(PouchdbAuthentication);

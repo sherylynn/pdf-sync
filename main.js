@@ -32,16 +32,19 @@ function createWindow() {
 
   // and load the index.html of the app.
   // win.loadFile('/build/generic/web/viewer.html')
-  win.loadURL(path.join('file://', __dirname, '/build/generic/web/viewer.html'));
   if (debug) {
     // Open the DevTools.
     win.webContents.openDevTools();
+    win.loadURL(path.join('http://127.0.0.1:9000/web/viewer.html'));
+  } else {
+    win.loadURL(path.join('file://', __dirname,
+      '/build/generic/web/viewer.html'));
   }
   // Emitted when the window is closed.
   autoUpdater.checkForUpdatesAndNotify();
   win.webContents.on('context-menu', (e, params) => {
-    let menu=new Menu()
-    let message= 'o'
+    let menu = new Menu()
+    let message = 'o'
     message = message + "f"
     menu.append(new MenuItem({
       label: message

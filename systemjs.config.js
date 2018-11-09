@@ -71,6 +71,9 @@
       'core-js': new URL('node_modules/core-js', baseLocation).href,
     },
     meta: {
+      //'../node_modules/js-md5/src/md5.js': {
+      //  'exports': 'md5',
+      //},
       '*': {
         scriptLoad: false,
         esModule: true,
