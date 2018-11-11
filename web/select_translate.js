@@ -39,19 +39,19 @@ class SelectTranslate {
           // alert(selectString+response);
           console.log(response.data);
           alert(response.data.trans_result[0].src + ':' + response.data.trans_result[
-            0].dst)
+            0].dst);
         } catch (error) {
           console.error(error);
         }
       } else {
-        alert('字数太长,尽量少于15字')
+        alert('字数太长,尽量少于15字');
       }
     }
   }
 
   bind() {
     console.log('binded');
-    window.addEventListener('click', (e) => {
+    document.getElementById('viewer').addEventListener('click', (e) => {
       e.preventDefault();
       this.select();
     }, false);
