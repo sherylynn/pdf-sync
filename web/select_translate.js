@@ -1,12 +1,16 @@
+import {
+  config
+} from '../config';
+import axios from '../node_modules/axios/dist/axios.min.js'
 class SelectTranslate {
 
   constructor() {
 
   }
 
-  select() {
+  async select() {
     let selectString = window.getSelection().toString();
-    if (selectString !== '') {
+    if (selectString !== '' && selectString.length<= 15) {
       alert(selectString);
     }
   }
