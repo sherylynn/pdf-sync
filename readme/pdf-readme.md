@@ -47,5 +47,9 @@ change string to your setting which configure above in ./config.js
       server_origin: 'your_db_url',
       server_admin: 'your_db_admin',
       server_passwd: 'your_db_admin_passwd',
+    // baidu trans api config
+      translate_url: 'http://api.fanyi.baidu.com/api/trans/vip/translate',
+      translate_appid: 'your appid',
+      translate_key: 'your key',  
     };
     export { config, };

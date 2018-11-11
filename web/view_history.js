@@ -26,8 +26,9 @@ PouchDB.plugin(PouchdbAuthentication);
 
 
 // import PouchDB from 'pouch// console.log(databaseStr);
-let url = new URL(window.location.href);
+
 // electron or gulp server
+// let url = new URL(window.location.href);
 // '/db' for gulp proxy
 // let origin = url.protocol == 'file:' ? config.server_origin : url.origin + '/db';
 let origin = config.server_origin;

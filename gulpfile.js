@@ -1126,6 +1126,9 @@ gulp.task('server', function (done) {
 });
 var connect = require('gulp-connect');
 var proxy = require('http-proxy-middleware');
+let translate_url = 'http://api.fanyi.baidu.com/api/trans/vip/translate';
+//let self_config =require('./config.js')
+//import { config as self_config } from './config.js';
 gulp.task('cor', function () {
   connect.server({
       root: '',
@@ -1140,6 +1143,13 @@ gulp.task('cor', function () {
                       '^/db': '',
                   },
               }),
+              proxy(['/trans'], {
+                target: translate_url, // input url of your db
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/trans': '',
+                },
+            }),
               proxy(['/pdf'], {
                 target: 'http://127.0.0.1:7777',
                 changeOrigin: true,
