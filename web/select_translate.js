@@ -16,23 +16,25 @@ class SelectTranslate {
   constructor() {
 
   }
-  show(message){
-    alert(message.before+ ':' + message.after);
+
+  show(message) {
+    alert(message.before + ':' + message.after);
   }
+
   async select() {
     let selectString = window.getSelection().toString();
     if (selectString !== '') {
       if (selectString.length <= 15) {
-        let result ={}
-        switch(config.translate_mode){
+        let result = {};
+        switch (config.translate_mode) {
           case 'hybrid':
-            result = this.local_trans(selectString)? this.local_trans(selectString):await this.baidu_trans(selectString)
+            result = this.local_trans(selectString) ? this.local_trans(selectString):await this.baidu_trans(selectString);
             break;
           default:
-            result = this.local_trans(selectString)
+            result = this.local_trans(selectString);
         }
-        console.log(result)
-        this.show(result)
+        console.log(result);
+        this.show(result);
       } else {
         alert('字数太长,尽量少于15字');
       }
@@ -40,12 +42,13 @@ class SelectTranslate {
   }
 
   local_trans(selectString) {
-    let result=查词.取释义(selectString).释义
+    //let result=查词.取释义(selectString).释义
+    let result=window.local_dict[selectString.trim().toLowerCase()]
     if(!result){
       return false
-    }else{
-      return {before:selectString,after:result}
     }
+      return {before:selectString,after:result}
+
 
   }
 
@@ -69,10 +72,10 @@ class SelectTranslate {
       // axios don't support jsonp
       // alert(selectString+response);
       console.log(response.data);
-      return {before:response.data.trans_result[0].src,after:response.data.trans_result[0].dst}
+      return { before: response.data.trans_result[0].src, after: response.data.trans_result[0].dst ,};
     } catch (error) {
       console.error(error);
-      return {before:'error',after:error}
+      return { before: 'error', after: error ,};
     }
   }
 

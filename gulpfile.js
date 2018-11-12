@@ -649,6 +649,8 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
 
     gulp.src('web/pdf-readme.pdf')
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
+    gulp.src('web/local_dict.json')
+        .pipe(gulp.dest(GENERIC_DIR + 'web')),
   ]);
 });
 
