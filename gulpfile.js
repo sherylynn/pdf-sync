@@ -622,7 +622,9 @@ gulp.task('markdown2pdf', function () {
 gulp.task('generic', ['buildnumber', 'locale'], function () {
   console.log();
   console.log('### Creating generic viewer');
-  var defines = builder.merge(DEFINES, { GENERIC: true, });
+  // var defines = builder.merge(DEFINES, { GENERIC: true, CHROME:true,});
+  // 开chrome 跳过 source map 对打包无作用
+  var defines = builder.merge(DEFINES, { GENERIC: true,});
 
   rimraf.sync(GENERIC_DIR);
 

@@ -51,5 +51,6 @@ change string to your setting which configure above in ./config.js
       translate_url: 'http://api.fanyi.baidu.com/api/trans/vip/translate',
       translate_appid: 'your appid',
       translate_key: 'your key',  
+      translate_mode: 'hybrid or local'
     };
     export { config, };

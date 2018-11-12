@@ -82,6 +82,8 @@
           plugins: [babelPluginReplaceNonWebPackRequire],
         },
       },
+      // './local_trans/加载词典.js':{deps:['./local_trans/词典数据/词典0']}
+      // system.js 还是不支持vscode_english_chinese_dictionary的动态声明式require
     },
     map: {
       'plugin-babel': new URL(PluginBabelPath, baseLocation).href,

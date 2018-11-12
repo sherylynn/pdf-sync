@@ -1,6 +1,6 @@
 {
   "name": "pdf-sync",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "main.js",
   "author": "sherylynn",
   "email": "352281674@qq.com",
@@ -79,6 +79,7 @@
     "dist_arm": "electron-builder --linux --armv7l",
     "dist_deb": "electron-builder --linux ",
     "build": "gulp generic",
+    "prebuild_max": "gulp electron-prebuild --max-old-space-size=8192",
     "prebuild": "gulp electron-prebuild",
     "pub_ser": "gulp pub_ser",
     "pub_win": "npm run prebuild && build --win --publish always",
@@ -156,6 +157,7 @@
     },
     "files": [
       "**/*",
+      "!log.txt",
       "!test",
       "!src",
       "!build/app",
@@ -168,7 +170,10 @@
       "!l10n",
       "!src",
       "!test",
-      "!web"
+      "!web",
+      "!local_trans/.vscode",
+      "!local_trans/test",
+      "!local_trans/截图"
     ]
   }
 }
