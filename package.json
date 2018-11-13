@@ -1,6 +1,6 @@
 {
   "name": "pdf-sync",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "main.js",
   "author": "sherylynn",
   "email": "352281674@qq.com",
@@ -74,8 +74,8 @@
     "app": "electron ./ ",
     "dev": "concurrently \"npm start\" \"npm run app_test\" ",
     "dist_all": "electron-builder -mwl ",
-    "dist_win": "electron-builder --win ",
-    "dist_mac": "electron-builder --mac ",
+    "dist_win": "npm run prebuild && electron-builder --win ",
+    "dist_mac": "npm run prebuild && electron-builder --mac ",
     "dist_arm": "electron-builder --linux --armv7l",
     "dist_deb": "electron-builder --linux ",
     "build": "gulp generic",

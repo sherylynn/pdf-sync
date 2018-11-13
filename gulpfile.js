@@ -651,6 +651,8 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
     gulp.src('web/local_dict.json')
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
+    gulp.src('web/is_electron.js')
+        .pipe(gulp.dest(GENERIC_DIR + 'web')),
   ]);
 });
 

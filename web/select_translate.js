@@ -3,6 +3,7 @@ import {
   config
 } from '../config';
 import md5 from '../node_modules/blueimp-md5/js/md5.js';
+
 // import 查词 from '../local_trans/查词';//import by index.html
 // electron or gulp server
 // '/trans' for gulp proxy
@@ -28,7 +29,7 @@ class SelectTranslate {
         let result = {};
         switch (config.translate_mode) {
           case 'hybrid':
-            result = this.local_trans(selectString) ? this.local_trans(selectString):await this.baidu_trans(selectString);
+            result = this.local_trans(selectString) ? this.local_trans(selectString) : await this.baidu_trans(selectString);
             break;
           default:
             result = this.local_trans(selectString);
@@ -42,13 +43,12 @@ class SelectTranslate {
   }
 
   local_trans(selectString) {
-    //let result=查词.取释义(selectString).释义
-    let result=window.local_dict[selectString.trim().toLowerCase()]
-    if(!result){
-      return false
+    // let result=查词.取释义(selectString).释义
+    let result = window.local_dict[selectString.trim().toLowerCase()];
+    if (!result) {
+      return false;
     }
-      return {before:selectString,after:result}
-
+      return { before: selectString, after: result, };
 
   }
 
@@ -72,19 +72,37 @@ class SelectTranslate {
       // axios don't support jsonp
       // alert(selectString+response);
       console.log(response.data);
-      return { before: response.data.trans_result[0].src, after: response.data.trans_result[0].dst ,};
+      return { before: response.data.trans_result[0].src, after: response.data.trans_result[0].dst, };
     } catch (error) {
       console.error(error);
-      return { before: 'error', after: error ,};
+      return { before: 'error', after: error, };
     }
   }
 
   bind() {
     console.log('binded');
-    document.getElementById('viewer').addEventListener('click', (e) => {
-      e.preventDefault();
-      this.select();
-    }, false);
+    if (window.isElectron()) {
+      /*
+      //因为打包不能打包入electron，所以放到网页中加载
+      let { remote, } = require('electron');
+      let { Menu, MenuItem, } = remote;
+      */
+      let menu = new Menu();
+      let click=()=>{
+        this.select()
+      }
+      menu.append(new MenuItem({ label: '翻译', click }));
+      document.getElementById('viewer').addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        menu.popup({ window: remote.getCurrentWindow(), });
+      }, false);
+    } else {
+      document.getElementById('viewer').addEventListener('click', (e) => {
+        e.preventDefault();
+        this.select();
+      }, false);
+    }
+
   }
 
 }

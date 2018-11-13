@@ -42,6 +42,8 @@ function createWindow() {
   }
   // Emitted when the window is closed.
   autoUpdater.checkForUpdatesAndNotify();
+  /*
+  //关闭了主进程中的渲染
   win.webContents.on('context-menu', (e, params) => {
     let menu = new Menu()
     let message = 'o'
@@ -53,6 +55,7 @@ function createWindow() {
     // alert(1) main中没有alert
     // 需要在渲染进程中做
   })
+  */
   win.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
