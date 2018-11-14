@@ -2,9 +2,9 @@
 
 ## Thanks
 
-Thank [@KayFly](https://github.com/kayflyhttps://) for designing the Logo for pdf-sync
+Thank [@KayFly](https://github.com/kayfly) for designing the Logo for pdf-sync
 
-![Logo](../icon.png)
+![Logo](icon.png)
 
 ## Sync
 
