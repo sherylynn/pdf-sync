@@ -79,6 +79,31 @@ class SelectTranslate {
     }
   }
 
+  trans_toggle() {
+    let result = false;
+    switch (window.localStorage.getItem('trans.toggle')) {
+      case 'false':
+        result = false;
+        break;
+      case 'true':
+        result = true;
+        break;
+      case undefined:
+        result = false;
+        break;
+      case true:
+        result = true;
+        break;
+      case false:
+        result = false;
+        break;
+      default:
+        result = false;
+
+    }
+    return result;
+  }
+
   bind() {
     console.log('binded');
     if (window.isElectron()) {
@@ -88,21 +113,32 @@ class SelectTranslate {
       let { Menu, MenuItem, } = remote;
       */
       let menu = new Menu();
-      let click=()=>{
-        this.select()
-      }
-      menu.append(new MenuItem({ label: '翻译', click }));
+      let click = () => {
+        this.select();
+      };
+      menu.append(new MenuItem({ label: '翻译', click, }));
+      menu.append(new MenuItem({ type: 'separator', }));
+      menu.append(new MenuItem({
+        label: '双击直译',
+        type: 'checkbox',
+        checked: this.trans_toggle(),
+        click() {
+          window.localStorage.setItem('trans.toggle', menu.items[2].checked);
+        },
+      }));
       document.getElementById('viewer').addEventListener('contextmenu', (e) => {
         e.preventDefault();
         menu.popup({ window: remote.getCurrentWindow(), });
       }, false);
-    } else {
-      document.getElementById('viewer').addEventListener('click', (e) => {
-        e.preventDefault();
-        this.select();
-      }, false);
     }
-
+    document.getElementById('viewer').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (window.isElectron() && !this.trans_toggle()) {
+        console.log('双击关闭');
+      } else {
+        this.select();
+      }
+    }, false);
   }
 
 }
