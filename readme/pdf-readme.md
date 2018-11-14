@@ -1,5 +1,11 @@
 # pdf-sync
 
+## Thanks
+
+Thank [@KayFly](https://github.com/kayflyhttps://) for designing the Logo for pdf-sync
+
+![Logo](../icon.png)
+
 ## Sync
 
 pdf-sync will sync your read process between your different devices
