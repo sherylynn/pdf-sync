@@ -27,7 +27,7 @@ let promptUpdateAvailable = () => {
     {
       type: 'info',
       message: 'Update Available',
-      buttons: ['Download'],
+      buttons: ['Background download'],
       defaultId: 0,
     },
     (clickedIndex) => {
@@ -41,9 +41,9 @@ let promptUpdateAvailable = () => {
 let promptUpdateDownloaded = () => {
   dialog.showMessageBox(
     {
-      type: 'info',
+      type: 'question',
       message: 'Update Downloaded',
-      buttons: ['Update', 'Close'],
+      buttons: ['Install', 'Close'],
       defaultId: 0,
     },
     (clickedIndex) => {
@@ -60,7 +60,7 @@ let promptUpdateDownloaded = () => {
 let promptUpdateFail = () => {
   dialog.showMessageBox(
     {
-      type: 'info',
+      type: 'error',
       message: 'Download fail',
       buttons: ['ok'],
       defaultId: 0,
@@ -84,6 +84,9 @@ function createWindow() {
   // win.loadFile('/build/generic/web/viewer.html')
   if (debug) {
     // Open the DevTools.
+    promptUpdateAvailable()
+    promptUpdateDownloaded()
+    promptUpdateFail()
     win.webContents.openDevTools();
     win.loadURL(path.join('http://127.0.0.1:9000/web/viewer.html'));
   } else {
