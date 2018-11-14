@@ -2,8 +2,9 @@
 const {
   app,
   BrowserWindow,
+  dialog,
   Menu,
-  MenuItem
+  MenuItem,
 } = require('electron');
 // import { autoUpdater } from "electron-updater"
 const {
@@ -21,6 +22,55 @@ function sendStatusToWindow(text) {
   log.info(text);
   win.webContents.send('message', text);
 }
+let promptUpdateAvailable = () => {
+  dialog.showMessageBox(
+    {
+      type: 'info',
+      message: 'Update Available',
+      buttons: ['Download'],
+      defaultId: 0,
+    },
+    (clickedIndex) => {
+      if (clickedIndex === 0) {
+        console.log('start downloading');
+      }
+    }
+  );
+};
+
+let promptUpdateDownloaded = () => {
+  dialog.showMessageBox(
+    {
+      type: 'info',
+      message: 'Update Downloaded',
+      buttons: ['Update', 'Close'],
+      defaultId: 0,
+    },
+    (clickedIndex) => {
+      if (clickedIndex === 0) {
+        // This will install and then restart the app automatically.
+        // If the user dismisses this, the app will be auto-updated next time
+        // they restart.
+        autoUpdater.quitAndInstall();
+      }
+    }
+  );
+};
+
+let promptUpdateFail = () => {
+  dialog.showMessageBox(
+    {
+      type: 'info',
+      message: 'Download fail',
+      buttons: ['ok'],
+      defaultId: 0,
+    },
+    (clickedIndex) => {
+      if (clickedIndex === 0) {
+      }
+    }
+  );
+};
 
 function createWindow() {
   // Create the browser window.
@@ -41,7 +91,7 @@ function createWindow() {
       '/build/generic/web/viewer.html'));
   }
   // Emitted when the window is closed.
-  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.checkForUpdates();
   /*
   //关闭了主进程中的渲染
   win.webContents.on('context-menu', (e, params) => {
@@ -56,6 +106,21 @@ function createWindow() {
     // 需要在渲染进程中做
   })
   */
+  /*
+  let template=[];
+  const name =app.getName();
+  template.unshift({
+    label:name,
+    submenu:[
+      {
+        label:'About '+ name,
+        role: 'about'
+      }
+    ]
+  })
+  const menu =Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+  */
   win.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
@@ -67,12 +132,14 @@ autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking');
 });
 autoUpdater.on('update-available', (info) => {
+  promptUpdateAvailable();
   sendStatusToWindow('Update available.');
 });
 autoUpdater.on('update-not-available', (info) => {
   sendStatusToWindow('Update not available.');
 });
 autoUpdater.on('error', (err) => {
+  promptUpdateFail()
   sendStatusToWindow('Error in auto-updater. ' + err);
 });
 autoUpdater.on('download-progress', (progressObj) => {
@@ -83,6 +150,7 @@ autoUpdater.on('download-progress', (progressObj) => {
   sendStatusToWindow(log_message);
 });
 autoUpdater.on('update-downloaded', (info) => {
+  promptUpdateDownloaded();
   sendStatusToWindow('Update downloaded');
 });
 // This method will be called when Electron has finished
