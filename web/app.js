@@ -361,7 +361,7 @@ let PDFViewerApplication = {
       new PDFDocumentProperties(appConfig.documentProperties,
                                 this.overlayManager, eventBus, this.l10n);
 
-    console.log(appConfig.login)
+    console.log(appConfig.login);
     this.selectTranslate = new SelectTranslate();
     this.loginPrompt = new LoginPrompt(appConfig.login,
                                              this.overlayManager, this.l10n);
@@ -1605,7 +1605,13 @@ function webViewerInitialized() {
   });
 
   try {
-    webViewerOpenFileViaURL(file);
+    // if is cordova
+    if (window.resolveLocalFileSystemURI) {
+      webViewerOpenFileViaURI(file);
+    } else {
+      webViewerOpenFileViaURL(file);
+    }
+
   } catch (reason) {
     PDFViewerApplication.l10n.get('loading_error', null,
         'An error occurred while loading the PDF.').then((msg) => {
@@ -1654,7 +1660,46 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     }
   };
 }
+// for cordova
+let webViewerOpenFileViaURI;
+if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
+  webViewerOpenFileViaURI = function webViewerOpenFileViaURI(file) {
+    if (file && file.lastIndexOf('file:', 0) === 0) {
+      // file:-scheme. Load the contents in the main thread because QtWebKit
+      // cannot load file:-URLs in a Web Worker. file:-URLs are usually loaded
+      // very quickly, so there is no need to set up progress event listeners.
+      PDFViewerApplication.setTitleUsingUrl(file);
 
+      window.resolveLocalFileSystemURI(file, function(e) {
+        e.file(function(f) {
+            let reader = new FileReader();
+            reader.onloadend = function(evt) {
+              PDFViewerApplication.open(new Uint8Array(evt.target.result));
+            };
+            reader.readAsArrayBuffer(f);
+        });
+      }, function(e) {
+        console.log('error getting file');
+      });
+      return;
+    }
+
+    if (file) {
+      PDFViewerApplication.open(file);
+    }
+  };
+} else if (PDFJSDev.test('FIREFOX || MOZCENTRAL || CHROME')) {
+  webViewerOpenFileViaURI = function webViewerOpenFileViaURI(file) {
+    PDFViewerApplication.setTitleUsingUrl(file);
+    PDFViewerApplication.initPassiveLoading();
+  };
+} else {
+  webViewerOpenFileViaURI = function webViewerOpenFileViaURI(file) {
+    if (file) {
+      throw new Error('Not implemented: webViewerOpenFileViaURI');
+    }
+  };
+}
 function webViewerPageRendered(evt) {
   let pageNumber = evt.pageNumber;
   let pageIndex = pageNumber - 1;
