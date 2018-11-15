@@ -88,10 +88,10 @@ function createWindow() {
     promptUpdateDownloaded()
     promptUpdateFail()
     win.webContents.openDevTools();
-    win.loadURL(path.join('http://127.0.0.1:9000/web/viewer.html'));
+    win.loadURL(path.join('http://127.0.0.1:9000/web/index.html'));
   } else {
     win.loadURL(path.join('file://', __dirname,
-      '/build/generic/web/viewer.html'));
+      '/build/generic/web/index.html'));
   }
   // Emitted when the window is closed.
   autoUpdater.checkForUpdates();
