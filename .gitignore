@@ -16,7 +16,7 @@ android/build
 android/.gradle
 android/.idea
 android/local.properties
-android/assets/
+android/app/src/main/assets/
 
 # apk
 android/gradle.properties

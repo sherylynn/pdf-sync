@@ -42,6 +42,7 @@ var Vinyl = require('vinyl');
 var vfs = require('vinyl-fs');
 
 var BUILD_DIR = 'build/';
+var ANDROID_DIR = 'android/';
 var L10N_DIR = 'l10n/';
 var TEST_DIR = 'test/';
 var EXTENSION_SRC_DIR = 'extensions/';
@@ -49,6 +50,7 @@ var EXTENSION_SRC_DIR = 'extensions/';
 var BASELINE_DIR = BUILD_DIR + 'baseline/';
 var MOZCENTRAL_BASELINE_DIR = BUILD_DIR + 'mozcentral.baseline/';
 var GENERIC_DIR = BUILD_DIR + 'generic/';
+var CORDOVA_DIR = ANDROID_DIR + 'app/src/main/assets/';
 var COMPONENTS_DIR = BUILD_DIR + 'components/';
 var IMAGE_DECODERS_DIR = BUILD_DIR + 'image_decoders';
 var MINIFIED_DIR = BUILD_DIR + 'minified/';
@@ -609,12 +611,12 @@ gulp.task('markdown2pdf', function () {
   var rename = require('gulp-rename');
   var markdownpdf = require('gulp-markdown-pdf');
   gulp.src('readme/pdf-readme.md')
-  .pipe(rename('pdf-readme.pdf'))
-  .pipe(markdownpdf({
-    paperFormat: 'A5',
-  }))
-  // .pipe(gulp.dest(GENERIC_DIR + 'web'));
-  .pipe(gulp.dest('web'));
+    .pipe(rename('pdf-readme.pdf'))
+    .pipe(markdownpdf({
+      paperFormat: 'A5',
+    }))
+    // .pipe(gulp.dest(GENERIC_DIR + 'web'));
+    .pipe(gulp.dest('web'));
 });
 
 // Builds the generic production viewer that should be compatible with most
@@ -655,9 +657,23 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
   ]);
 });
+gulp.task('android',  function () {
+  console.log();
+  console.log('### pipe file to android');
+  rimraf.sync(CORDOVA_DIR);
+  gulp.src(GENERIC_DIR + 'web/*')
+    .pipe(gulp.dest(CORDOVA_DIR + 'www'));
+  gulp.src(GENERIC_DIR + 'web/cmaps/*')
+    .pipe(gulp.dest(CORDOVA_DIR + 'www/cmaps'));
+  gulp.src(GENERIC_DIR + 'web/images/*')
+    .pipe(gulp.dest(CORDOVA_DIR + 'www/images'));
+  gulp.src(GENERIC_DIR + 'web/locale/*')
+    .pipe(gulp.dest(CORDOVA_DIR + 'www/locale'));
+
+});
 
 // gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
-gulp.task('electron-prebuild', ['markdown2pdf', 'generic', ]);
+gulp.task('electron-prebuild', ['markdown2pdf', 'generic', 'android']);
 
 gulp.task('components', ['buildnumber'], function () {
   console.log();
