@@ -1,0 +1,5 @@
+对android打包的页面和普通的页面做区分，一个加载cordova.js 一个不加载 index.html编译的时候修改[cordova会覆盖require]
+
+打包时候locale子目录也要打包
+
+ndroid额外的东西的打包

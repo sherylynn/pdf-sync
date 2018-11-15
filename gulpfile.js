@@ -661,6 +661,8 @@ gulp.task('android',  function () {
   console.log();
   console.log('### pipe file to android');
   rimraf.sync(CORDOVA_DIR);
+  // gulp.src(GENERIC_DIR + 'web/**/*', { base: 'web', })
+  //   .pipe(gulp.dest(CORDOVA_DIR + 'www'));
   gulp.src(GENERIC_DIR + 'web/*')
     .pipe(gulp.dest(CORDOVA_DIR + 'www'));
   gulp.src(GENERIC_DIR + 'web/cmaps/*')
