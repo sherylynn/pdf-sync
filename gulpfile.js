@@ -629,7 +629,7 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
   rimraf.sync(GENERIC_DIR);
 
   return merge([
-    createBundle(defines).pipe(gulp.dest(GENERIC_DIR + 'build')),
+    createBundle(defines).pipe(gulp.dest(GENERIC_DIR + 'web')),
     createWebBundle(defines).pipe(gulp.dest(GENERIC_DIR + 'web')),
     gulp.src(COMMON_WEB_FILES, { base: 'web/', })
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
@@ -641,7 +641,7 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
     gulp.src(['external/bcmaps/*.bcmap', 'external/bcmaps/LICENSE'],
              { base: 'external/bcmaps', })
         .pipe(gulp.dest(GENERIC_DIR + 'web/cmaps')),
-    preprocessHTML('web/viewer.html', defines)
+    preprocessHTML('web/index.html', defines)
         .pipe(gulp.dest(GENERIC_DIR + 'web')),
     preprocessCSS('web/viewer.css', 'generic', defines, true)
         .pipe(postcss([autoprefixer(AUTOPREFIXER_CONFIG)]))
@@ -1166,7 +1166,7 @@ gulp.task('cor', function () {
           ];
       },
   });
-  console.log('### http://127.0.0.1:9000/web/viewer.html');
+  console.log('### http://127.0.0.1:9000/web/index.html');
 });
 
 gulp.task('reload', () => {
