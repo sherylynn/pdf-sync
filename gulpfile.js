@@ -627,7 +627,7 @@ gulp.task('generic', ['buildnumber', 'locale'], function () {
   console.log('### Creating generic viewer');
   // var defines = builder.merge(DEFINES, { GENERIC: true, CHROME:true,});
   // 开chrome 跳过 source map 对打包无作用
-  var defines = builder.merge(DEFINES, { GENERIC: true,});
+  var defines = builder.merge(DEFINES, { GENERIC: true, });
 
   rimraf.sync(GENERIC_DIR);
 
@@ -665,54 +665,47 @@ gulp.task('CORDOVA', ['buildnumber', 'locale'], function () {
   // 开chrome 跳过 source map 对打包无作用
   var defines = builder.merge(DEFINES, { GENERIC: true, CORDOVA: true, });
 
-  rimraf.sync(GENERIC_DIR);
+  rimraf.sync(CORDOVA_DIR);
 
   return merge([
-    createBundle(defines).pipe(gulp.dest(GENERIC_DIR + 'web')),
-    createWebBundle(defines).pipe(gulp.dest(GENERIC_DIR + 'web')),
+    createBundle(defines).pipe(gulp.dest(CORDOVA_DIR + 'www')),
+    createWebBundle(defines).pipe(gulp.dest(CORDOVA_DIR + 'www')),
     gulp.src(COMMON_WEB_FILES, { base: 'web/', })
-        .pipe(gulp.dest(GENERIC_DIR + 'web')),
-    gulp.src('LICENSE').pipe(gulp.dest(GENERIC_DIR)),
+        .pipe(gulp.dest(CORDOVA_DIR + 'www')),
     gulp.src([
       'web/locale/*/viewer.properties',
       'web/locale/locale.properties'
-    ], { base: 'web/', }).pipe(gulp.dest(GENERIC_DIR + 'web')),
+    ], { base: 'web/', }).pipe(gulp.dest(CORDOVA_DIR + 'www')),
     gulp.src(['external/bcmaps/*.bcmap', 'external/bcmaps/LICENSE'],
              { base: 'external/bcmaps', })
-        .pipe(gulp.dest(GENERIC_DIR + 'web/cmaps')),
+        .pipe(gulp.dest(CORDOVA_DIR + 'www/cmaps')),
     preprocessHTML('web/index.html', defines)
-        .pipe(gulp.dest(GENERIC_DIR + 'web')),
+        .pipe(gulp.dest(CORDOVA_DIR + 'www')),
     preprocessCSS('web/viewer.css', 'generic', defines, true)
         .pipe(postcss([autoprefixer(AUTOPREFIXER_CONFIG)]))
-        .pipe(gulp.dest(GENERIC_DIR + 'web')),
+        .pipe(gulp.dest(CORDOVA_DIR + 'www')),
 
     gulp.src('web/pdf-readme.pdf')
-        .pipe(gulp.dest(GENERIC_DIR + 'web')),
+        .pipe(gulp.dest(CORDOVA_DIR + 'www')),
     gulp.src('web/local_dict.json')
-        .pipe(gulp.dest(GENERIC_DIR + 'web')),
+        .pipe(gulp.dest(CORDOVA_DIR + 'www')),
     gulp.src('web/is_electron.js')
-        .pipe(gulp.dest(GENERIC_DIR + 'web')),
+        .pipe(gulp.dest(CORDOVA_DIR + 'www')),
   ]);
 });
-gulp.task('android', function () {
+gulp.task('android', ['markdown2pdf', 'CORDOVA'], function () {
   console.log();
   console.log('### pipe file to android');
-  rimraf.sync(CORDOVA_DIR);
-  // gulp.src(GENERIC_DIR + 'web/**/*', { base: 'web', })
+  // rimraf.sync(CORDOVA_DIR);
+  // gulp.src(GENERIC_DIR + 'web/**/*', { base: GENERIC_DIR + 'web/', })
   //   .pipe(gulp.dest(CORDOVA_DIR + 'www'));
-  gulp.src(GENERIC_DIR + 'web/*')
+  gulp.src('cordova/**/*', { base: 'cordova/', })
     .pipe(gulp.dest(CORDOVA_DIR + 'www'));
-  gulp.src(GENERIC_DIR + 'web/cmaps/*')
-    .pipe(gulp.dest(CORDOVA_DIR + 'www/cmaps'));
-  gulp.src(GENERIC_DIR + 'web/images/*')
-    .pipe(gulp.dest(CORDOVA_DIR + 'www/images'));
-  gulp.src(GENERIC_DIR + 'web/locale/*')
-    .pipe(gulp.dest(CORDOVA_DIR + 'www/locale'));
 
 });
 
 // gulp.task('electron-prebuild', ['generic', 'markdown2pdf']);
-gulp.task('electron-prebuild', ['markdown2pdf', 'generic', 'android']);
+gulp.task('electron-prebuild', ['markdown2pdf', 'generic']);
 
 gulp.task('components', ['buildnumber'], function () {
   console.log();
@@ -1188,8 +1181,8 @@ gulp.task('server', function (done) {
 var connect = require('gulp-connect');
 var proxy = require('http-proxy-middleware');
 let translate_url = 'http://api.fanyi.baidu.com/api/trans/vip/translate';
-//let self_config =require('./config.js')
-//import { config as self_config } from './config.js';
+// let self_config =require('./config.js')
+// import { config as self_config } from './config.js';
 gulp.task('cor', function () {
   connect.server({
       root: '',

@@ -615,6 +615,8 @@ let PDFViewerApplication = {
    *                      is opened.
    */
   async open(file, args) {
+    console.log('手动打开的file');
+    console.log(file);
     if (this.pdfLoadingTask) {
       // We need to destroy already opened document.
       await this.close();
@@ -1606,8 +1608,10 @@ function webViewerInitialized() {
 
   try {
     // if is cordova
-    if (window.resolveLocalFileSystemURI) {
-      webViewerOpenFileViaURI(file);
+    if (window.resolveLocalFileSystemURL) {
+      console.log('this is cordova');
+      console.log(file);
+      webViewerOpenFileViaCordova(file);
     } else {
       webViewerOpenFileViaURL(file);
     }
@@ -1645,6 +1649,7 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     }
 
     if (file) {
+      console.log(file+'just file')
       PDFViewerApplication.open(file);
     }
   };
@@ -1661,40 +1666,32 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
   };
 }
 // for cordova
-let webViewerOpenFileViaURI;
+let webViewerOpenFileViaCordova;
 if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
-  webViewerOpenFileViaURI = function webViewerOpenFileViaURI(file) {
-    if (file && file.lastIndexOf('file:', 0) === 0) {
-      // file:-scheme. Load the contents in the main thread because QtWebKit
-      // cannot load file:-URLs in a Web Worker. file:-URLs are usually loaded
-      // very quickly, so there is no need to set up progress event listeners.
-      PDFViewerApplication.setTitleUsingUrl(file);
+  webViewerOpenFileViaCordova = function webViewerOpenFileViaCodova(file) {
+    console.log('初始化file');
+    console.log(file);
+    PDFViewerApplication.setTitleUsingUrl(file);
 
-      window.resolveLocalFileSystemURI(file, function(e) {
-        e.file(function(f) {
-            let reader = new FileReader();
-            reader.onloadend = function(evt) {
-              PDFViewerApplication.open(new Uint8Array(evt.target.result));
-            };
-            reader.readAsArrayBuffer(f);
-        });
-      }, function(e) {
-        console.log('error getting file');
+    window.resolveLocalFileSystemURL('file:///android_asset/www/pdf-readme.pdf', function (e) {
+      e.file(function (f) {
+        let reader = new FileReader();
+        reader.onloadend = function (evt) {
+          PDFViewerApplication.open(new Uint8Array(evt.target.result));
+        };
+        reader.readAsArrayBuffer(f);
       });
-      return;
-    }
-
-    if (file) {
-      PDFViewerApplication.open(file);
-    }
+    }, function (e) {
+      console.log('error getting file');
+    });
   };
 } else if (PDFJSDev.test('FIREFOX || MOZCENTRAL || CHROME')) {
-  webViewerOpenFileViaURI = function webViewerOpenFileViaURI(file) {
+  webViewerOpenFileViaCordova = function webViewerOpenFileViaCordova(file) {
     PDFViewerApplication.setTitleUsingUrl(file);
     PDFViewerApplication.initPassiveLoading();
   };
 } else {
-  webViewerOpenFileViaURI = function webViewerOpenFileViaURI(file) {
+  webViewerOpenFileViaCordova = function webViewerOpenFileViaCordova(file) {
     if (file) {
       throw new Error('Not implemented: webViewerOpenFileViaURI');
     }
