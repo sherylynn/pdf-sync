@@ -53,6 +53,10 @@ See https://github.com/adobe-type-tools/cmap-resources
     <script src="../systemjs.config.js"></script>
 <!--#endif-->
 
+<!--#if (CORDOVA) -->
+<!--#include cordova-snippet.html-->
+<!--#endif-->
+
 <!--#if (GENERIC && !MINIFIED) -->
 <!--#include viewer-snippet.html-->
 <!--#endif-->
