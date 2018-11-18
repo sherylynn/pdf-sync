@@ -78,6 +78,7 @@
     "dist_mac": "npm run prebuild && electron-builder --mac ",
     "dist_arm": "electron-builder --linux --armv7l",
     "dist_deb": "electron-builder --linux ",
+    "android": "gulp android",
     "build": "gulp generic",
     "prebuild_max": "gulp electron-prebuild --max-old-space-size=8192",
     "prebuild": "gulp electron-prebuild",
