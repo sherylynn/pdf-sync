@@ -213,7 +213,7 @@ class LoginPrompt {
     if (password && password.length > 0) {
       if (await this._checkAndReg(username, md5(password))) {
         // add sync to local
-        this._syncToLocal();
+        await this._syncToLocal();
         this.close();
       } else {
         this.reset();
