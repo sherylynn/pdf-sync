@@ -158,6 +158,7 @@
     },
     "files": [
       "**/*",
+      "!android",
       "!log.txt",
       "!test",
       "!src",
