@@ -1608,11 +1608,12 @@ function webViewerInitialized() {
 
   try {
     // if is cordova
-    if (window.resolveLocalFileSystemURL) {
+    if (window.cordova) {
       console.log('this is cordova');
       console.log(file);
       webViewerOpenFileViaCordova(file);
     } else {
+      console.log(window.resolveLocalFileSystemURL);
       webViewerOpenFileViaURL(file);
     }
 
@@ -1649,7 +1650,7 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     }
 
     if (file) {
-      console.log(file+'just file')
+      console.log(file+'just file');
       PDFViewerApplication.open(file);
     }
   };

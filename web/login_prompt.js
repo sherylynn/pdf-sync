@@ -101,8 +101,11 @@ class LoginPrompt {
     if (await this._checkAndReg(username, passwd)) {
       console.log('loged');
       if (username === 'guest') {
+        // add sync to local
+        this._syncToLocal();
         this.open();
       }
+
     } else {
       this.open();
     }
@@ -127,7 +130,7 @@ class LoginPrompt {
       promptString.then((msg) => {
         this.passwd_label.textContent = msg;
         this.username_input.value = username;
-        if (username == 'guest') {
+        if (username === 'guest') {
           this.passwd_input.value = '******';
         }
         //
@@ -154,6 +157,20 @@ class LoginPrompt {
       this.username_input.value = '';
       this.passwd_input.value = '';
     });
+  }
+
+  async _syncToLocal() {
+    let username = localStorage.getItem(
+      'pdf-sync.username') ? localStorage.getItem(
+      'pdf-sync.username') : 'guest';
+    let passwd = localStorage.getItem('pdf-sync.passwd') ? localStorage.getItem(
+      'pdf-sync.passwd') : md5('******');
+    try {
+      let doc = await db.get(username);
+      localStorage.setItem('pdfjs.history', doc['databaseStr']);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async _checkAndReg(username, passwd) {
@@ -195,7 +212,8 @@ class LoginPrompt {
 
     if (password && password.length > 0) {
       if (await this._checkAndReg(username, md5(password))) {
-        console.log(await this._checkAndReg(username, md5(password)));
+        // add sync to local
+        this._syncToLocal();
         this.close();
       } else {
         this.reset();
