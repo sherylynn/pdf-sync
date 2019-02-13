@@ -615,6 +615,7 @@ let PDFViewerApplication = {
    *                      is opened.
    */
   async open(file, args) {
+    // ------------------------------------------------------------------
     console.log('手动打开的file');
     console.log(file);
     if (this.pdfLoadingTask) {
@@ -631,9 +632,14 @@ let PDFViewerApplication = {
     if (typeof file === 'string') { // URL
       this.setTitleUsingUrl(file);
       parameters.url = file;
+      console.log('手动打开的file是string格式');
     } else if (file && 'byteLength' in file) { // ArrayBuffer
       parameters.data = file;
     } else if (file.url && file.originalUrl) {
+    // --------------------------------是这种格式----------------------------------
+      console.log('手动打开的file是双url格式');
+      console.log('等会儿会用到的一个是直接用getDocument，这个是源自src的api.js,似乎里面也是unit8');
+      console.log('originalUrl 是shared/util.js 里的createObjectURL');
       this.setTitleUsingUrl(file.originalUrl);
       parameters.url = file.url;
     }
@@ -1645,12 +1651,12 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
         xhr.send();
       } catch (ex) {
         throw ex;
-      }
+       }
       return;
     }
 
     if (file) {
-      console.log(file+'just file');
+      console.log(file + 'just file');
       PDFViewerApplication.open(file);
     }
   };
@@ -1674,11 +1680,15 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     console.log(file);
     PDFViewerApplication.setTitleUsingUrl(file);
 
-    // window.resolveLocalFileSystemURL(file, function (e) {
-    window.resolveLocalFileSystemURL('file:///android_asset/www/pdf-readme.pdf', function (e) {
+    console.log('openViaCordova' + file);
+    window.resolveLocalFileSystemURL(file, function (e) {
+    // 这段其实和 webViewerFileInputChange 方法实现的一致的，也就是说实质上和input方法获取的是一致的
+    // 没有奇怪的blob。都是通过这种格式read的
+    // window.resolveLocalFileSystemURL('file:///android_asset/www/pdf-readme.pdf', function (e) {
       e.file(function (f) {
         let reader = new FileReader();
-        reader.onloadend = function (evt) {
+        // reader.onloadend = function (evt) {
+        reader.onload = function (evt) {
           PDFViewerApplication.open(new Uint8Array(evt.target.result));
         };
         reader.readAsArrayBuffer(f);
@@ -1901,6 +1911,10 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     let file = evt.fileInput.files[0];
 
     if (URL.createObjectURL && !AppOptions.get('disableCreateObjectURL')) {
+      console.log('file可能是通过这里转化成奇怪的url和blob形式');
+      console.log('这个其实是普通html5的input=file后的获取的格式');
+      // console.log('blob只是一个编码，实际上用的和我写的viacordova是一致的方法');
+      console.log(file);
       let url = URL.createObjectURL(file);
       if (file.name) {
         url = { url, originalUrl: file.name, };

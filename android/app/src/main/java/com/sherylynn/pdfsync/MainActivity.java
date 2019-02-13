@@ -46,6 +46,7 @@ public class MainActivity extends CordovaActivity
                 Log.d(TAG, filePath);
             }else {
                 filePath = "file:///android_asset/www/pdf-readme.pdf";
+                //filePath="file:///storage/emulated/0/$MuMu共享文件夹/C#图解教程(第4版).pdf";
                 //filePath = "file:///storage/emulated/0/360/test.pdf";
                 Log.v("pdf-sync-file", "action不匹配"+filePath);
             }
