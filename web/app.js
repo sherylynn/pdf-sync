@@ -1674,6 +1674,7 @@ if (typeof PDFJSDev === 'undefined' || PDFJSDev.test('GENERIC')) {
     console.log(file);
     PDFViewerApplication.setTitleUsingUrl(file);
 
+    // window.resolveLocalFileSystemURL(file, function (e) {
     window.resolveLocalFileSystemURL('file:///android_asset/www/pdf-readme.pdf', function (e) {
       e.file(function (f) {
         let reader = new FileReader();
