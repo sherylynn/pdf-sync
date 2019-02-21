@@ -92,6 +92,14 @@
     "electron-updater": "^3.1.2"
   },
   "build": {
+    "fileAssociations":[
+      {
+        "ext":"pdf",
+        "description":"PDF file extension",
+        "name":"PDF",
+        "role":"Editor"
+      }
+    ],
     "appId": "com.sherylynn.pdf-sync",
     "mac": {
       "target": [

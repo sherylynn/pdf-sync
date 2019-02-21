@@ -14,6 +14,9 @@ const {
 const log = require('electron-log');
 const path = require('path');
 const debug = /--debug/.test(process.argv[2]);
+
+let filePath = path.join('file://', __dirname, '/build/generic/web/pdf-readme.pdf');
+let launchUrl = path.join('file://', __dirname, '/build/generic/web/index.html');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
@@ -84,14 +87,13 @@ function createWindow() {
   // win.loadFile('/build/generic/web/viewer.html')
   if (debug) {
     // Open the DevTools.
-    promptUpdateAvailable()
-    promptUpdateDownloaded()
-    promptUpdateFail()
+    promptUpdateAvailable();
+    promptUpdateDownloaded();
+    promptUpdateFail();
     win.webContents.openDevTools();
     win.loadURL(path.join('http://127.0.0.1:9000/web/index.html'));
   } else {
-    win.loadURL(path.join('file://', __dirname,
-      '/build/generic/web/index.html'));
+    win.loadURL(launchUrl + '?file=' + filePath);
   }
   // Emitted when the window is closed.
   autoUpdater.checkForUpdates();
@@ -142,7 +144,7 @@ autoUpdater.on('update-not-available', (info) => {
   sendStatusToWindow('Update not available.');
 });
 autoUpdater.on('error', (err) => {
-  promptUpdateFail()
+  promptUpdateFail();
   sendStatusToWindow('Error in auto-updater. ' + err);
 });
 autoUpdater.on('download-progress', (progressObj) => {
@@ -168,6 +170,14 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+app.on('open-file', function(event, path) {
+  log.info('----------------------- app open-file ---------------------------------------', path);
+  filePath = path;
+  if (process.argv){
+    log.info(process.argv);
+  }
+  event.preventDefault();
 });
 
 app.on('activate', function () {
