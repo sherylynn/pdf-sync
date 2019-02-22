@@ -12,6 +12,7 @@ const {
 } = require('electron-updater');
 
 const log = require('electron-log');
+log.transports.file.level = 'info';
 const path = require('path');
 const debug = /--debug/.test(process.argv[2]);
 
@@ -171,6 +172,9 @@ app.on('window-all-closed', function () {
     app.quit();
   }
 });
+if (process.argv){
+    log.info(process.argv);
+  }
 app.on('open-file', function(event, path) {
   log.info('----------------------- app open-file ---------------------------------------', path);
   filePath = path;

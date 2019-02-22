@@ -75,6 +75,8 @@
     "dev": "concurrently \"npm start\" \"npm run app_test\" ",
     "dist_all": "electron-builder -mwl ",
     "dist_win": "npm run prebuild && electron-builder --win ",
+    "install": "node ./tools/install_win.js",
+    "install_win": "npm run dist_win && node ./tools/install_win.js",
     "dist_mac": "npm run prebuild && electron-builder --mac ",
     "dist_arm": "electron-builder --linux --armv7l",
     "dist_deb": "electron-builder --linux ",
@@ -92,12 +94,12 @@
     "electron-updater": "^3.1.2"
   },
   "build": {
-    "fileAssociations":[
+    "fileAssociations": [
       {
-        "ext":"pdf",
-        "description":"PDF file extension",
-        "name":"PDF",
-        "role":"Editor"
+        "ext": "pdf",
+        "description": "PDF file extension",
+        "name": "PDF",
+        "role": "Editor"
       }
     ],
     "appId": "com.sherylynn.pdf-sync",
