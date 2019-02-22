@@ -16,7 +16,8 @@ log.transports.file.level = 'info';
 const path = require('path');
 const debug = /--debug/.test(process.argv[2]);
 
-let filePath = path.join('file://', __dirname, '/build/generic/web/pdf-readme.pdf');
+let filePath = '';
+// let filePath = path.join('file://', __dirname, '/build/generic/web/pdf-readme.pdf');
 let launchUrl = path.join('file://', __dirname, '/build/generic/web/index.html');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -94,7 +95,12 @@ function createWindow() {
     win.webContents.openDevTools();
     win.loadURL(path.join('http://127.0.0.1:9000/web/index.html'));
   } else {
-    win.loadURL(launchUrl + '?file=' + filePath);
+    // for init title
+    if (filePath !== '') {
+      win.loadURL(launchUrl + '?file=' + filePath);
+    } else {
+      win.loadURL(launchUrl);
+    }
   }
   // Emitted when the window is closed.
   autoUpdater.checkForUpdates();
@@ -172,15 +178,18 @@ app.on('window-all-closed', function () {
     app.quit();
   }
 });
-if (process.argv){
+// for windows---------------------------------------------
+
+if (process.argv) {
     log.info(process.argv);
+    if (process.argv[1]) {
+      log.info('----------------------- app argv-file ---------------------------------------', process.argv[1]);
+      filePath = process.argv[1];
+    }
   }
 app.on('open-file', function(event, path) {
   log.info('----------------------- app open-file ---------------------------------------', path);
   filePath = path;
-  if (process.argv){
-    log.info(process.argv);
-  }
   event.preventDefault();
 });
 
