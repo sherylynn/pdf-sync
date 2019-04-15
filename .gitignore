@@ -5,6 +5,7 @@ tags
 .DS_Store
 Makefile
 node_modules/
+package-lock.json
 examples/node/svgdump/
 examples/node/pdf2png/*.png
 db/
