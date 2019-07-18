@@ -39,6 +39,7 @@ allprojects {
     repositories {
         mavenCentral();
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -141,19 +142,21 @@ cdvBuildRelease.dependsOn {
     return computeBuildTargetName(false)
 }
 
-task cdvPrintProps << {
-    println('cdvCompileSdkVersion=' + cdvCompileSdkVersion)
-    println('cdvBuildToolsVersion=' + cdvBuildToolsVersion)
-    println('cdvVersionCode=' + cdvVersionCode)
-    println('cdvVersionCodeForceAbiDigit=' + cdvVersionCodeForceAbiDigit)
-    println('cdvMinSdkVersion=' + cdvMinSdkVersion)
-    println('cdvBuildMultipleApks=' + cdvBuildMultipleApks)
-    println('cdvReleaseSigningPropertiesFile=' + cdvReleaseSigningPropertiesFile)
-    println('cdvDebugSigningPropertiesFile=' + cdvDebugSigningPropertiesFile)
-    println('cdvBuildArch=' + cdvBuildArch)
-    println('computedVersionCode=' + android.defaultConfig.versionCode)
-    android.productFlavors.each { flavor ->
-        println('computed' + flavor.name.capitalize() + 'VersionCode=' + flavor.versionCode)
+task cdvPrintProps  {
+    doLast{
+        println('cdvCompileSdkVersion=' + cdvCompileSdkVersion)
+        println('cdvBuildToolsVersion=' + cdvBuildToolsVersion)
+        println('cdvVersionCode=' + cdvVersionCode)
+        println('cdvVersionCodeForceAbiDigit=' + cdvVersionCodeForceAbiDigit)
+        println('cdvMinSdkVersion=' + cdvMinSdkVersion)
+        println('cdvBuildMultipleApks=' + cdvBuildMultipleApks)
+        println('cdvReleaseSigningPropertiesFile=' + cdvReleaseSigningPropertiesFile)
+        println('cdvDebugSigningPropertiesFile=' + cdvDebugSigningPropertiesFile)
+        println('cdvBuildArch=' + cdvBuildArch)
+        println('computedVersionCode=' + android.defaultConfig.versionCode)
+        android.productFlavors.each { flavor ->
+            println('computed' + flavor.name.capitalize() + 'VersionCode=' + flavor.versionCode)
+        }
     }
 }
 
@@ -163,6 +166,7 @@ android {
         versionCode cdvVersionCode ?: new BigInteger("" + privateHelpers.extractIntFromManifest("versionCode"))
         applicationId privateHelpers.extractStringFromManifest("package")
         minSdkVersion = 19
+        targetSdkVersion 27
 
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
@@ -173,7 +177,8 @@ android {
       abortOnError false;
     }
 
-    compileSdkVersion cdvCompileSdkVersion
+    //compileSdkVersion cdvCompileSdkVersion
+    compileSdkVersion 28
     buildToolsVersion cdvBuildToolsVersion
 
     //This code exists for Crosswalk and other Native APIs.
@@ -262,6 +267,23 @@ dependencies {
     // SUB-PROJECT DEPENDENCIES START
     implementation(project(path: ":CordovaLib"))
     // SUB-PROJECT DEPENDENCIES END
+
+    //add by sherylynn
+    //implementation 'com.azhon:appupdate:2.1.0'
+    //implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.2'
+    //implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
+    implementation 'com.blankj:utilcode:1.23.7'
+    implementation 'com.alibaba:fastjson:1.1.71.android'
+    //implementation 'com.github.javiersantos:AppUpdater:2.7'
+    //implementation 'com.google.android.material:material:1.0.0-rc01'
+    //implementation "com.mikepenz:iconics-core:4.0.0"
+    //implementation "com.mikepenz:iconics-views:4.0.0"
+    //implementation "androidx.appcompat:appcompat:1.0.2.appCompat"
+    //implementation 'com.mikepenz:google-material-typeface:3.0.1.4.original-kotlin@aar'
+    //implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
 }
 
 def promptForReleaseKeyPassword() {

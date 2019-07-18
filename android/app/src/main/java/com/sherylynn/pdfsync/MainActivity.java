@@ -24,6 +24,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.blankj.utilcode.util.LogUtils;
+
 import org.apache.cordova.*;
 
 public class MainActivity extends CordovaActivity
@@ -36,20 +38,15 @@ public class MainActivity extends CordovaActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
+        PermissionUtils.verifyStoragePermissions(this);
         Intent intent = getIntent();
-        if (intent!=null){
-            String action = intent.getAction();
-            if (intent.ACTION_VIEW.equals(action)) {
-                uri = intent.getData();
-                filePath = "file://"+Uri.decode(uri.getEncodedPath());
-                Log.d(TAG, filePath);
-            }else {
-                filePath = "file:///android_asset/www/pdf-readme.pdf";
-                //filePath="file:///storage/emulated/0/$MuMu共享文件夹/C#图解教程(第4版).pdf";
-                //filePath = "file:///storage/emulated/0/360/test.pdf";
-                Log.v("pdf-sync-file", "action不匹配"+filePath);
-            }
+
+        //直接打开
+        if (intent!=null && intent.ACTION_VIEW.equals(intent.getAction())){
+            uri = intent.getData();
+            filePath = "file://"+URIUtils.getPathFromInputStreamUri(this,uri,"last.pdf");
+            //filePath = "file://"+Uri.decode(uri.getEncodedPath());
+            LogUtils.v("打开的文件"+filePath);
         }else {
             filePath = "file:///android_asset/www/pdf-readme.pdf";
             Log.v("pdf-sync-file", "intent为null"+filePath);

@@ -75,7 +75,7 @@
     "dev": "concurrently \"npm start\" \"npm run app_test\" ",
     "dist_all": "electron-builder -mwl ",
     "dist_win": "npm run prebuild && electron-builder --win ",
-    "install": "node ./tools/install_win.js",
+    "installtest": "node ./tools/install_win.js",
     "install_win": "npm run dist_win && node ./tools/install_win.js",
     "dist_mac": "npm run prebuild && electron-builder --mac ",
     "dist_arm": "electron-builder --linux --armv7l",
