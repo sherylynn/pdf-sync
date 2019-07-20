@@ -1,0 +1,39 @@
+{
+  "_from": "cordova-plugin-androidx",
+  "_id": "cordova-plugin-androidx@1.0.2",
+  "_inBundle": false,
+  "_integrity": "sha1-pI0/q/IL60JzFx/ezgtSQ2KyZD8=",
+  "_location": "/cordova-plugin-androidx",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-androidx",
+    "name": "cordova-plugin-androidx",
+    "escapedName": "cordova-plugin-androidx",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npm.taobao.org/cordova-plugin-androidx/download/cordova-plugin-androidx-1.0.2.tgz",
+  "_shasum": "a48d3fabf20beb4273171fdece0b524362b2643f",
+  "_spec": "cordova-plugin-androidx",
+  "_where": "/home/lynn/test",
+  "author": {
+    "name": "Dave Alden"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "q": "^1.4.1"
+  },
+  "deprecated": false,
+  "description": "Cordova/Phonegap plugin to enable AndroidX",
+  "devDependencies": {},
+  "license": "MIT",
+  "name": "cordova-plugin-androidx",
+  "version": "1.0.2"
+}
