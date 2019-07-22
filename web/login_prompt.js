@@ -141,6 +141,8 @@ class LoginPrompt {
   reset() {
     this.username_input.value = '';
     this.passwd_input.value = '';
+    localStorage.removeItem('pdf-all.username');
+    localStorage.removeItem('pdf-all.url');
     localStorage.removeItem('pdf-sync.username');
     localStorage.removeItem('pdf-sync.passwd');
     localStorage.removeItem('pdf-sync.logState');
@@ -204,6 +206,9 @@ class LoginPrompt {
         return false;
       }
     }
+    // pdf-all
+    localStorage.setItem('pdf-all.url', config.pdf_all_url);
+    localStorage.setItem('pdf-all.username', config.pdf_all_username);
   }
 
   async verify() {
