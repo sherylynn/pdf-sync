@@ -32,6 +32,7 @@ import { PDFSidebar, SidebarView } from './pdf_sidebar';
 import { AppOptions } from './app_options';
 import { getGlobalEventBus } from './dom_events';
 import { LoginPrompt } from './login_prompt';
+import { PdfAll } from './pdf-all';
 import { OverlayManager } from './overlay_manager';
 import { PasswordPrompt } from './password_prompt';
 import { PDFAttachmentViewer } from './pdf_attachment_viewer';
@@ -167,6 +168,7 @@ let PDFViewerApplication = {
       this.eventBus.dispatch('localized', { source: this, });
     });
 
+    // await this._initPdfAll();
     this.initialized = true;
   },
 
@@ -365,6 +367,7 @@ let PDFViewerApplication = {
     this.selectTranslate = new SelectTranslate();
     this.loginPrompt = new LoginPrompt(appConfig.login,
                                              this.overlayManager, this.l10n);
+    this.pdfAll = new PdfAll();
 
     this.pdfCursorTools = new PDFCursorTools({
       container,
@@ -413,6 +416,10 @@ let PDFViewerApplication = {
                                                    eventBus, this.l10n);
   },
 
+  /*async _initPdfAll(){
+    this.pdfAll=new PdfAll();
+  }
+  */
   run(config) {
     this.initialize(config).then(webViewerInitialized);
   },
@@ -1631,6 +1638,9 @@ function webViewerInitialized() {
   }
   PDFViewerApplication.loginPrompt.autoOpen();
   PDFViewerApplication.selectTranslate.bind();
+  PDFViewerApplication.pdfAll.getLatestProgress();
+  //let timer = window.setInterval(PDFViewerApplication.updateProgress, 15000);
+  //PDFViewerApplication.pdfAll.Sync();
 }
 
 let webViewerOpenFileViaURL;

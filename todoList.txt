@@ -3,3 +3,20 @@
 打包时候locale子目录也要打包
 
 ndroid额外的东西的打包
+
+
+-----------------------------
+
+api
+
+PDFViewerApplication.page = xx
+设定当前的页面进度
+xx = PDFViewerApplication.page
+获得页面进度
+
+PDFViewerApplication.pdfall.sync
+究竟如何添加才能带入this
+
+PDFViewerApplication.pdfall.getprocess
+究竟要在什么时候插入，才能替代掉官方的进度
+而不是被官方的进度替换掉
