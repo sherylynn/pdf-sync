@@ -174,11 +174,11 @@ module.exports = [
     "runs": true
   }
 ];
-module.exports.metadata = 
+module.exports.metadata =
 // TOP OF METADATA
 {
   "cordova-plugin-whitelist": "1.3.3",
-  "cordova-plugin-file": "6.0.1"
+  "cordova-plugin-file": "6.0.1",
   "cordova-plugin-androidx": "1.0.2",
   "cordova-plugin-androidx-adapter": "1.1.0"
 };
