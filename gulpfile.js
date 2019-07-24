@@ -700,7 +700,7 @@ gulp.task('android', ['markdown2pdf', 'CORDOVA'], function () {
   gulp.src('cordova/**/*', { base: 'cordova/', })
     .pipe(gulp.dest(CORDOVA_DIR + 'www'));
   gulp.src('web/pdf-readme.pdf')
-      .pipe(gulp.dest(CORDOVA_DIR + 'www')),
+      .pipe(gulp.dest(CORDOVA_DIR + 'www'));
 
 });
 
