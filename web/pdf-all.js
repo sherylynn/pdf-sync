@@ -19,7 +19,7 @@ class PdfAll {
     this._isPagesLoaded = false;
 
     this.updateProgress = async () => {
-      let pageNum = PDFViewerApplication.page;
+      let pageNum = PDFViewerApplication.page - 1;
       if (pageNum === this.lastUploadPageNum) {
           return;
       }
@@ -56,10 +56,10 @@ class PdfAll {
       let response = await axios.get(url);
       console.log('进度');
       console.log(response.data);
-      PDFViewerApplication.page = response.data.page_num;
+      PDFViewerApplication.page = response.data.page_num + 1;
     } catch (error) {
       console.error(error);
-      return { page_num: 0, };
+      return { page_num: 1, };
     }
   }
 
@@ -87,7 +87,7 @@ class PdfAll {
 
 
   Sync() {
-    let timer = window.setInterval(this.updateProgress, 15000);
+    let timer = window.setInterval(this.updateProgress, 9000);
   }
 
 }
