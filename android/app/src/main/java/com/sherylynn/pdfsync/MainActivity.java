@@ -28,9 +28,13 @@ import com.blankj.utilcode.util.LogUtils;
 
 import org.apache.cordova.*;
 
+import java.io.File;
+
 public class MainActivity extends CordovaActivity
 {
     private Uri uri;
+    private String uriString;
+    private String fileName="last.pdf";
     private String TAG="MainActivity";
     private String filePath;
     @Override
@@ -44,7 +48,21 @@ public class MainActivity extends CordovaActivity
         //直接打开
         if (intent!=null && intent.ACTION_VIEW.equals(intent.getAction())){
             uri = intent.getData();
-            filePath = "file://"+URIUtils.getPathFromInputStreamUri(this,uri,"last.pdf");
+            uriString = Uri.decode(uri.getEncodedPath());
+            fileName = uriString.substring(uriString.lastIndexOf("/")+1,uriString.length());
+            // delete cache last pdf files
+            File dirFile = new File(this.getCacheDir().getPath());
+            File[] files = dirFile.listFiles();
+
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isFile()) {
+                    LogUtils.v("已经缓存的文件"+files[i].getAbsolutePath());
+                    files[i].delete();
+                }
+            }
+
+            // get filePath
+            filePath = "file://"+URIUtils.getPathFromInputStreamUri(this,uri,fileName);
             //filePath = "file://"+Uri.decode(uri.getEncodedPath());
             LogUtils.v("打开的文件"+filePath);
         }else {
