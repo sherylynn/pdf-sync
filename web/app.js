@@ -367,7 +367,7 @@ let PDFViewerApplication = {
     this.selectTranslate = new SelectTranslate();
     this.loginPrompt = new LoginPrompt(appConfig.login,
                                              this.overlayManager, this.l10n);
-    this.pdfAll = new PdfAll();
+    this.pdfAll = new PdfAll(eventBus);
 
     this.pdfCursorTools = new PDFCursorTools({
       container,
@@ -1638,7 +1638,7 @@ function webViewerInitialized() {
   }
   PDFViewerApplication.loginPrompt.autoOpen();
   PDFViewerApplication.selectTranslate.bind();
-  PDFViewerApplication.pdfAll.getLatestProgress();
+  //PDFViewerApplication.pdfAll.getLatestProgress();
   //let timer = window.setInterval(PDFViewerApplication.updateProgress, 15000);
   //PDFViewerApplication.pdfAll.Sync();
 }
