@@ -685,8 +685,6 @@ gulp.task('CORDOVA', ['buildnumber', 'locale'], function () {
         .pipe(postcss([autoprefixer(AUTOPREFIXER_CONFIG)]))
         .pipe(gulp.dest(CORDOVA_DIR + 'www')),
 
-    gulp.src('web/pdf-readme.pdf')
-        .pipe(gulp.dest(CORDOVA_DIR + 'www')),
     gulp.src('web/local_dict.json')
         .pipe(gulp.dest(CORDOVA_DIR + 'www')),
     gulp.src('web/is_electron.js')
@@ -701,6 +699,8 @@ gulp.task('android', ['markdown2pdf', 'CORDOVA'], function () {
   //   .pipe(gulp.dest(CORDOVA_DIR + 'www'));
   gulp.src('cordova/**/*', { base: 'cordova/', })
     .pipe(gulp.dest(CORDOVA_DIR + 'www'));
+  gulp.src('web/pdf-readme.pdf')
+      .pipe(gulp.dest(CORDOVA_DIR + 'www')),
 
 });
 
