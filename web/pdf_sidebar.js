@@ -137,7 +137,8 @@ class PDFSidebar {
       return;
     }
     let isViewPreserved = (view === this.visibleView);
-    this.switchView(view, /* forceOpen */ true);
+    // this.switchView(view, /* forceOpen */ true);
+    this.switchView(view, /* forceOpen */ false);
 
     if (isViewPreserved) {
       // Prevent dispatching two back-to-back `sidebarviewchanged` events,

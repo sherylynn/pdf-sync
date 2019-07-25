@@ -44,7 +44,7 @@ class PdfAll {
       console.log('加载完毕');
       this.getLatestProgress();
       this.Sync();
-      PDFViewerApplication.pdfSidebar.close();
+      // PDFViewerApplication.pdfSidebar.close();
       // this.timer = window.setInterval(this.updateProgress, 15000);
     });
   }

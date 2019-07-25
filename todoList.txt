@@ -26,3 +26,5 @@ sidebarToggle.click()
 PDFViewerApplication.pdfSidebar.toggle()
 PDFViewerApplication.pdfSidebar.close()
 切换书签栏 sidebar outlineviewer
+#pdf_sidebar.js 
+this.switchView(view, /* forceOpen */ false);
