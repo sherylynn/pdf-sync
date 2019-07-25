@@ -53,6 +53,7 @@ import { Toolbar } from './toolbar';
 import { ViewHistory } from './view_history';
 
 const DEFAULT_SCALE_DELTA = 1.1;
+const DEFAULT_SCALE_PLUS_DELTA = 0.05;
 const DISABLE_AUTO_FETCH_LOADING_BAR_TIMEOUT = 5000; // ms
 const FORCE_PAGES_LOADED_TIMEOUT = 10000; // ms
 
@@ -427,8 +428,10 @@ let PDFViewerApplication = {
   zoomIn(ticks) {
     let newScale = this.pdfViewer.currentScale;
     do {
-      newScale = (newScale * DEFAULT_SCALE_DELTA).toFixed(2);
-      newScale = Math.ceil(newScale * 10) / 10;
+      // newScale = (newScale * DEFAULT_SCALE_DELTA).toFixed(2);
+      newScale = (newScale + DEFAULT_SCALE_PLUS_DELTA).toFixed(2);
+      // newScale = Math.ceil(newScale * 10) / 10;
+      // newScale = Math.ceil(newScale * 5) / 5;
       newScale = Math.min(MAX_SCALE, newScale);
     } while (--ticks > 0 && newScale < MAX_SCALE);
     this.pdfViewer.currentScaleValue = newScale;
@@ -437,8 +440,10 @@ let PDFViewerApplication = {
   zoomOut(ticks) {
     let newScale = this.pdfViewer.currentScale;
     do {
-      newScale = (newScale / DEFAULT_SCALE_DELTA).toFixed(2);
-      newScale = Math.floor(newScale * 10) / 10;
+      // newScale = (newScale / DEFAULT_SCALE_DELTA).toFixed(2);
+      newScale = (newScale - DEFAULT_SCALE_PLUS_DELTA).toFixed(2);
+      // newScale = Math.floor(newScale * 10) / 10;
+      // newScale = Math.floor(newScale * 5) / 5;
       newScale = Math.max(MIN_SCALE, newScale);
     } while (--ticks > 0 && newScale > MIN_SCALE);
     this.pdfViewer.currentScaleValue = newScale;

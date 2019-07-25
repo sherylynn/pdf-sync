@@ -28,3 +28,9 @@ PDFViewerApplication.pdfSidebar.close()
 切换书签栏 sidebar outlineviewer
 #pdf_sidebar.js 
 this.switchView(view, /* forceOpen */ false);
+
+
+scaleselect
+来选择缩放大小 需要适配语言
+
+app.js zoomin zoomout
