@@ -20,3 +20,9 @@ PDFViewerApplication.pdfall.sync
 PDFViewerApplication.pdfall.getprocess
 究竟要在什么时候插入，才能替代掉官方的进度
 而不是被官方的进度替换掉
+
+
+sidebarToggle.click()
+PDFViewerApplication.pdfSidebar.toggle()
+PDFViewerApplication.pdfSidebar.close()
+切换书签栏 sidebar outlineviewer
