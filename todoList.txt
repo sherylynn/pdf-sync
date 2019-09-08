@@ -34,3 +34,5 @@ scaleselect
 来选择缩放大小 需要适配语言
 
 app.js zoomin zoomout
+
+set default scale value in ui_util.js
