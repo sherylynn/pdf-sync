@@ -19,7 +19,7 @@
     "concurrently": "^4.0.1",
     "core-js": "^2.5.7",
     "electron": "^2.0.12",
-    "electron-builder": "^20.28.4",
+    "electron-builder": "^21.2.0",
     "escodegen": "^1.11.0",
     "eslint": "^5.6.1",
     "eslint-plugin-mozilla": "^0.14.0",
@@ -91,7 +91,7 @@
   },
   "dependencies": {
     "electron-log": "^2.2.17",
-    "electron-updater": "^3.1.2"
+    "electron-updater": "^4.2.0"
   },
   "build": {
     "fileAssociations": [
