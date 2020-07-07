@@ -18,7 +18,7 @@
     "blueimp-md5": "^2.10.0",
     "concurrently": "^4.0.1",
     "core-js": "^2.5.7",
-    "electron": "^2.0.12",
+    "electron": "^9.1.0",
     "electron-builder": "^21.2.0",
     "escodegen": "^1.11.0",
     "eslint": "^5.6.1",
